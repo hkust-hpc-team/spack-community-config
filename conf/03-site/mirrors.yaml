@@ -1,0 +1,6 @@
+mirrors:
+  local_installers:
+    binary: false
+    signed: false
+    source: true
+    url: file:///opt/shared/installers/

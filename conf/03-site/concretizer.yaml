@@ -1,0 +1,9 @@
+concretizer:
+  reuse:
+    from:
+      - type: external
+      - type: local
+  targets:
+    granularity: microarchitectures
+    host_compatible: true
+  unify: when_possible

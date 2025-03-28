@@ -1,0 +1,4 @@
+[submodule "repos/meta-pkgs"]
+	path = repos/meta-pkgs
+	url = https://github.com/kftsehk/spack-meta-pkgs.git
+	branch = main

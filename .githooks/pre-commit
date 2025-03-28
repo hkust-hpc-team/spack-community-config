@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -eou pipefail
+
+fd -uu0 --one-file-system '.*\.ya?ml' | xargs -rt0 -P $(nproc) -i yq -w 10000 -i -S -Y . {}

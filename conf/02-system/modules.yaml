@@ -1,0 +1,4 @@
+modules:
+  default:
+    roots:
+      lmod: $user_cache_path/lmod

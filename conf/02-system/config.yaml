@@ -1,0 +1,6 @@
+config:
+  environments_root: $user_cache_path/envs
+  install_tree:
+    root: $user_cache_path/apps
+  template_dirs:
+    - $user_cache_path/templates

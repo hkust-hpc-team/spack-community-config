@@ -1,0 +1,14 @@
+spack:
+  concretizer:
+    targets:
+      granularity: generic
+      host_compatible: true
+    unify: false
+  specs:
+    - matrix:
+        - - "gcc"
+        - - "@14"
+          - "@13"
+          - "@12"
+        - - "target=x86_64_v4 %gcc@11.5.0.spack"
+  view: false

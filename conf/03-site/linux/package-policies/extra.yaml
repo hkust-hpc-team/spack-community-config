@@ -1,0 +1,58 @@
+packages:
+  bzip2:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  ca-certificates-mozilla:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gdbm:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gettext:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gnutls:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libidn2:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libxml2:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  ncurses:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  nghttp2:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  pigz:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-docutils:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-wheel:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  python-venv:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  readline:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  sqlite:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  util-linux-uuid:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  util-macros:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  xz:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  zstd:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"

@@ -1,0 +1,3 @@
+upstreams:
+  site-instance:
+    install_tree: $spack/opt/spack

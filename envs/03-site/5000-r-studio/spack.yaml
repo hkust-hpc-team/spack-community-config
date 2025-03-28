@@ -1,0 +1,16 @@
+spack:
+  concretizer:
+    targets:
+      granularity: generic
+      host_compatible: true
+  modules:
+    default:
+      lmod:
+        r:
+          template: modules/r-modulefile.lua
+  specs:
+    - matrix:
+        - - r@4.4.1 +X+rmath
+          - rstudio@2024.09.1 ^r@4.4.1 +X+rmath
+        - - platform=linux target=x86_64_v4 %gcc@11.5.0.spack
+  view: false

@@ -1,0 +1,44 @@
+config:
+  aliases:
+    "?": tutorial
+    a: add
+    c: concretize
+    cacheclean: clean -sdfm
+    cc: compiler
+    ccs: compilers
+    check: find --show-concretized --only-missing --namespaces --very-long --show-full-compiler
+    d: debug
+    e: env
+    ex: external
+    i: info
+    in: install
+    l: list
+    li: find
+    lmod: module lmod
+    lock: concretize -U -f
+    ls: list
+    lscc: compiler list
+    lsenv: env list
+    s: spec
+    search: list
+    sync: install --only-concrete --show-log-on-error
+    t: tags
+    un: uninstall
+    v: view
+    vars: info --no-dependencies --no-versions
+    vers: versions
+  build_jobs: 256
+  build_stage:
+    - $tempdir/spack-stage/build
+  connect_timeout: 30
+  db_lock_timeout: 300
+  flags:
+    keep_werror: "none"
+  misc_cache: $tempdir/spack-stage/misc
+  shared_linking:
+    missing_library_policy: warn
+  source_cache: $tempdir/spack-stage/repo
+  template_dirs:
+    - $spack/site/templates
+    - $spack/dist/templates
+  test_stage: $tempdir/spack-stage/test

@@ -1,0 +1,28 @@
+spack:
+  compilers:
+    - compiler:
+        environment: {}
+        extra_rpaths: []
+        flags: {}
+        modules: []
+        operating_system: rocky9
+        paths:
+          cc: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          f77: /usr/bin/gfortran
+          fc: /usr/bin/gfortran
+        spec: gcc@=11.4.1.os
+        target: x86_64
+  concretizer:
+    reuse: false
+    targets:
+      granularity: generic
+      host_compatible: true
+    unify: false
+  packages::
+    all:
+      require:
+        - "target=x86_64_v4 %gcc@11.4.1.os"
+  specs:
+    - "gcc@11.5.0 +binutils+bootstrap+graphite+piclibs+profiled languages=c,c++,fortran,lto ^binutils@2.36:"
+  view: false

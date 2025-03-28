@@ -1,0 +1,284 @@
+packages:
+  all:
+    compiler:
+      - "gcc"
+      - "aocc"
+      - "intel"
+      - "nvhpc"
+      - "oneapi"
+    permissions:
+      read: world
+      write: user
+    prefer:
+      - +cxx
+      - +fortran
+      - +shared
+      - +pic
+      - +static
+      - +threads
+      - +openmp
+      - threads=tbb
+      - threads=pthreads
+      - threads=openmp
+      - +mpi
+      - libs=shared,static
+      - +zlib
+      - +xz
+      - +bz2
+      - +lzma
+      - +ncurses
+      - +curl
+      - +ssl
+      - tls=openssl
+      - ~debug
+      - ~dev
+    providers:
+      blas: [netlib-lapack, amdblis, intel-oneapi-mkl]
+      fftw-api: [fftw, amdfftw, intel-oneapi-mkl]
+      flame: [libflame, amdlibflame, intel-oneapi-mkl]
+      fortran-rt: [gcc-runtime, intel-oneapi-runtime]
+      gl: [osmesa, egl]
+      go-or-gccgo-bootstrap: [go-bootstrap]
+      golang: [go]
+      java: [openjdk]
+      lapack: [netlib-lapack, amdlibflame, intel-oneapi-mkl]
+      libc: [glibc, musl]
+      lua-lang: [lua-luajit-openresty, lua]
+      luajit: [lua-luajit-openresty, lua-luajit]
+      mkl: [intel-oneapi-mkl]
+      mpi: [openmpi, mpich, mvapich2, intel-oneapi-mpi]
+      scalapack: [netlib-scalapack, amdscalapack, intel-oneapi-mkl]
+      tbb: [intel-tbb]
+      uuid: [libuuid]
+      zlib-api: [zlib-ng+compat, zlib]
+  autoconf:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  automake:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  bazel:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  berkeley-db:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  bison:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  ccache:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  cmake:
+    prefer:
+      - +ncurses
+      - ~qtgui
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  coreutils:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  cuda:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  curl:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  cvs:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  diffutils:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  doxygen:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  egl:
+    buildable: false
+  emacs:
+    prefer:
+      - +json
+  findutils:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  flex:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gawk:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gcc-runtime:
+    prefer:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+    require:
+      - "target=x86_64_v4 %gcc@:"
+  ghostscript:
+    prefer:
+      - +dynamic
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  git:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  git-lfs:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  glibc:
+    externals:
+      - prefix: /usr
+        spec: glibc@2.35
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gmake:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gnuconfig:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  groff:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gtkplus:
+    prefer:
+      - +cups
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  intel-oneapi-mkl:
+    prefer:
+      - threads=tbb
+    require:
+      - one_of:
+          - "+cluster +gfortran %aocc@: ^intel-oneapi-mpi"
+          - "+cluster +gfortran %gcc@: ^intel-oneapi-mpi"
+          - "+cluster %intel@: ^intel-oneapi-mpi"
+          - "+cluster %oneapi@: ^intel-oneapi-mpi"
+          - "+cluster mpi_family=openmpi +gfortran %aocc@: ^openmpi"
+          - "+cluster mpi_family=openmpi +gfortran %gcc@: ^openmpi"
+          - "+cluster mpi_family=openmpi %intel@: ^openmpi"
+          - "+cluster mpi_family=openmpi %oneapi@: ^openmpi"
+  iwyu:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  justbuild:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libffi:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libiconv:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libsigsegv:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libtool:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libxcrypt:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  llvm:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  m4:
+    prefer:
+      - +sigsegv
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  mbedtls:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  meson:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  ninja:
+    prefer:
+      - +re2c
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  npm:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  openssh:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  openssl:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  patch:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  perl:
+    require:
+      - "^zlib@:"
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  pkg-config:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  pkgconf:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-cython:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-flit-core:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-jupyter-packaging:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-jupyter-server:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-jupyterlab:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-meson-python:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-pip:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-pythran:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-setuptools:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-setuptools-scm:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  python:
+    prefer:
+      - +optimizations
+      - ~pyexpat
+      - "@3.11"
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  sccache:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  scons:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  sed:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  subversion:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  swig:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  tar:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  texinfo:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  typescript:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  zlib:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"

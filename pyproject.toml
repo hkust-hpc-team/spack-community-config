@@ -1,0 +1,22 @@
+[project]
+name = "spack-community-config"
+version = "0.0.1"
+description = "An opinionated spack config offering periodic updates from Spack develop-<date> branch."
+authors = [
+    {name = "Kin Fai TSE", email = "kftse@ust.hk"},
+]
+dependencies = []
+requires-python = ">=3.10,<3.13"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
+
+[dependency-groups]
+dev = [
+    "pdm>=2.22.2",
+    "tox>=4.24.1",
+    "yq>=3.4.3",
+]

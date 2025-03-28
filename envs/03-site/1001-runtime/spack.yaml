@@ -1,0 +1,17 @@
+spack:
+  concretizer:
+    unify: false
+  packages:
+    all:
+      require:
+        - "target=x86_64_v4 %gcc@11.5.0.spack"
+    gcc-runtime:
+      require:
+        - "target=x86_64_v4 %gcc@11.5.0.spack"
+  specs:
+    - go
+    - openjdk
+    - perl
+    - python@3.11
+    - rust
+  view: false

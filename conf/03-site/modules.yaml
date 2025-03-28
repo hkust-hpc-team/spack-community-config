@@ -1,0 +1,47 @@
+modules:
+  default:
+    arch_folder: true
+    enable:
+      - lmod
+    lmod:
+      all:
+        autoload: run
+      core_compilers:
+        - gcc@11.5.0.spack
+      hide_implicits: true
+      hierarchy:
+        - mpi
+        - compiler
+      projections:
+        all: "{name}/{version}-{target.name}"
+        aocc: "{name}/{version}"
+        gcc: "{name}/{version}"
+        intel-oneapi-compilers: "{name}/{version}"
+        intel-oneapi-compilers-classic: "{name}/{version}"
+        intel-oneapi-mpi: "{name}/{version}"
+        mpich: "{name}/{version}"
+        mvapich-plus: "{name}/{version}"
+        openmpi: "{name}/{version}"
+  prefix_inspections:
+    ./:
+      - CMAKE_PREFIX_PATH
+    ./bin:
+      - PATH
+    ./lib:
+      - LD_LIBRARY_PATH
+    ./lib/pkgconfig:
+      - PKG_CONFIG_PATH
+    ./lib64:
+      - LD_LIBRARY_PATH
+    ./lib64/pkgconfig:
+      - PKG_CONFIG_PATH
+    ./man:
+      - MANPATH
+    ./sbin:
+      - PATH
+    ./share/aclocal:
+      - ACLOCAL_PATH
+    ./share/man:
+      - MANPATH
+    ./share/pkgconfig:
+      - PKG_CONFIG_PATH
