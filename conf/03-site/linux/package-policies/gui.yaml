@@ -1,0 +1,52 @@
+packages:
+  ffmpeg:
+    prefer:
+      - +bzlib
+      - +drawtext
+      - +gpl
+      - +libmp3lame
+      - +libopenjpeg
+      - +libopus
+      - +libspeex
+      - +libvorbis
+      - +libvpx
+      - +libx264
+      - +libxml2
+      - +nonfree
+      - +openssl
+      - +shared
+      - +version3
+      - +X
+      - +lzma
+      - +libaom
+      - +libsnappy
+      - +libwebp
+      - +avresample
+      - +sdl2
+  mesa:
+    prefer:
+      - +llvm
+      - +opengl
+      - +opengles
+      - +glx
+      - +osmesa
+      - default_library=shared,static
+  qt:
+    prefer:
+      - +dbus
+      - +gtk
+      - +gui
+      - +opengl
+      - shared
+      - +sql
+      - +ssl
+      - +tools
+      - +webkit
+  vtk:
+    prefer:
+      - +ffmpeg
+      - ~mpi
+      - +opengl2
+      - +qt
+      - +xdmf
+      - +python

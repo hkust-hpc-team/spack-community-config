@@ -3,6 +3,7 @@ include:
   - path: package-policies/build.yaml
   - path: package-policies/extra.yaml
   - path: package-policies/compiler.yaml
+  - path: package-policies/gui.yaml
   - path: package-policies/mpi-external.yaml
   - path: package-policies/mpi-roce-slurm.yaml
   - path: package-policies/apps/hdf5-netcdf.yaml
