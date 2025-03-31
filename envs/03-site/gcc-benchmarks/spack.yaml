@@ -1,0 +1,65 @@
+spack:
+  concretizer:
+    unify: false
+  definitions:
+    - cc:
+        - matrix:
+            - - "%gcc"
+            - - "@14"
+              - "@13"
+              - "@12"
+              - "@11"
+    - targets:
+        - matrix:
+            - - target=zen4
+    - mpi:
+        - "^[virtuals=mpi] intel-oneapi-mpi +generic-names %gcc@:"
+  packages:
+    all:
+      conflict:
+        - "%gcc@11.5.0.spack"
+        - "%gcc@11.4.1.os"
+      providers:
+        blas: [intel-oneapi-mkl]
+        fftw-api: [intel-oneapi-mkl]
+        flame: [intel-oneapi-mkl]
+        lapack: [intel-oneapi-mkl]
+        mpi: [intel-oneapi-mpi]
+        scalapack: [amdscalapack, intel-oneapi-mkl]
+        tbb: [intel-oneapi-tbb]
+        zlib-api: [zlib-ng+compat]
+      require:
+        - "target=zen4 %gcc@:"
+    gcc-runtime:
+      conflict:
+        - "%gcc@11.4.1.os"
+      require:
+        - "%gcc@:"
+    glibc:
+      conflict:
+        - "%gcc@11.4.1.os"
+      externals:
+        - prefix: /usr
+          spec: glibc@2.34
+      require:
+        - "%gcc@:"
+    intel-oneapi-mkl:
+      prefer:
+        - +gfortran
+        - threads=tbb
+    intel-oneapi-mpi:
+      prefer:
+        - +generic-names
+      require:
+        - "target=x86_64_v4 %gcc@:"
+  specs:
+    - matrix:
+        - - hpcg +openmp
+          - hpl +openmp ^[virtuals=blas] intel-oneapi-mkl
+          - ior +hdf5 +ncmpi
+          - intel-mpi-benchmarks
+          - osu-micro-benchmarks +graphing
+        - - $targets
+        - - $mpi
+        - - $cc
+  view: false

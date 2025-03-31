@@ -1,0 +1,68 @@
+spack:
+  concretizer:
+    targets:
+      granularity: microarchitectures
+      host_compatible: false
+    unify: false
+  packages:
+    all:
+      require:
+        - one_of:
+            - "target=zen4 %aocc@:"
+            - "target=x86_64_v4 %gcc@11.5.0.spack"
+    amdblis:
+      prefer:
+        - +blas
+        - +cblas
+        - +suphandling
+        - libs=shared,static
+        - threads=pthreads
+        - +aocl_gemm
+    amdlibflame:
+      prefer:
+        - +lapack2flame
+        - +shared
+        - +static
+        - threads=pthreads
+        - +ipo
+        - vectorization=avx512
+    amdscalapack:
+      prefer:
+        - +pic
+        - +shared
+        - +ipo
+    aocl-libmem:
+      prefer:
+        - +shared
+        - ~tunables
+        - vectorization=avx512
+        - +ipo
+    aocl-sparse:
+      prefer:
+        - +benchmarks
+        - +examples
+        - +shared
+        - +ipo
+        - +avx
+        - +openmp
+    aocl-utils:
+      prefer:
+        - +doc
+        - +examples
+        - +tests
+  specs:
+    - matrix:
+        - - amdlibm
+          - amdscalapack
+          - amdlibflame
+          - amdblis
+          - aocl-compression
+          - aocl-crypto
+          - aocl-da
+          - aocl-libmem
+          - aocl-sparse
+          - aocl-utils
+          - amduprof
+        - - "target=zen4 %aocc@5.0.0"
+          - "target=zen4 %aocc@4.2.0"
+  view: false

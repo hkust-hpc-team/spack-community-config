@@ -1,0 +1,45 @@
+spack:
+  concretizer:
+    unify: false
+  definitions:
+    - cc:
+        - matrix:
+            - - "%oneapi"
+            - - "@2025"
+    - targets:
+        - matrix:
+            - - target=icelake
+    - intel-oneapi-mkl:
+        - matrix:
+            - - intel-oneapi-mkl
+            - - "@2025"
+    - mpi:
+        - "^[virtuals=mpi] intel-oneapi-mpi %oneapi@:"
+    - specs:
+        - matrix:
+            - - parallel-netcdf@1.14
+              - netcdf-fortran@4.6
+              - netcdf-c@4.9
+              - hdf5@1.14
+              - $intel-oneapi-mkl
+  packages:
+    all:
+      providers:
+        blas: [intel-oneapi-mkl]
+        fftw-api: [intel-oneapi-mkl]
+        flame: [intel-oneapi-mkl]
+        lapack: [intel-oneapi-mkl]
+        'mpi:': [intel-oneapi-mpi]
+        scalapack: [intel-oneapi-mkl]
+        'tbb:': [intel-oneapi-tbb]
+        zlib-api: [zlib-ng+compat]
+      require:
+        - one_of:
+            - "target=x86_64_v4 %gcc@11.5.0.spack"
+            - "target=icelake %oneapi@:"
+  specs:
+    - matrix:
+        - - $specs
+        - - $targets
+        - - $mpi
+  view: false

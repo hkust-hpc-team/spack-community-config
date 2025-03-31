@@ -6,3 +6,4 @@ include:
   - path: package-policies/gui.yaml
   - path: package-policies/mpi-roce.yaml
   - path: package-keys/matlab.yaml
+  - path: package-policies/cxx.yaml

@@ -1,0 +1,89 @@
+spack:
+  concretizer:
+    targets:
+      host_compatible: false
+    unify: false
+  definitions:
+    - cc:
+        - matrix:
+            - - target=sapphirerapids
+              - target=zen4
+            - - "%gcc"
+            - - "@=14.2.0"
+              - "@=13.3.0"
+    - intel-oneapi-mkl:
+        - matrix:
+            - - intel-oneapi-mkl
+            - - "@2025"
+              - "@2024"
+              - "@2023"
+    - mpi:
+        - "^[virtuals=mpi] intel-oneapi-mpi +generic-names $cc"
+  packages:
+    all:
+      conflict:
+        - "%gcc@11.4.1.os"
+      providers:
+        blas: [intel-oneapi-mkl]
+        fftw-api: [intel-oneapi-mkl]
+        flame: [intel-oneapi-mkl]
+        lapack: [intel-oneapi-mkl]
+        mpi: [intel-oneapi-mpi]
+        scalapack: [amdscalapack, intel-oneapi-mkl]
+        tbb: [intel-oneapi-tbb]
+        zlib-api: [zlib-ng+compat]
+      require:
+        - one_of:
+            - "target=zen4 %gcc@=14.2.0"
+            - "target=zen4 %gcc@=13.3.0"
+            - "target=zen4 %gcc@=12.4.0"
+            - "target=zen4 %gcc@=11.5.0"
+            - "target=sapphirerapids %gcc@=14.2.0"
+            - "target=sapphirerapids %gcc@=13.3.0"
+            - "target=sapphirerapids %gcc@=12.4.0"
+            - "target=sapphirerapids %gcc@=11.5.0"
+            - "target=x86_64_v4 %gcc@=11.5.0.spack"
+    hdf5:
+      prefer:
+        - +cxx
+        - +fortran
+        - +hl
+        - +java
+        - +szip
+        - +threadsafe
+        - +map
+        - +subfiling
+    intel-oneapi-mkl:
+      prefer:
+        - +gfortran
+        - threads=tbb
+    intel-oneapi-mpi:
+      conflict:
+        - "%gcc@11.5.0.spack"
+      prefer:
+        - +generic-names
+      require:
+        - "target=x86_64_v4"
+    netcdf-c:
+      prefer:
+        - +blosc
+        - +byterange
+        - +fsync
+        - +logging
+        - +nczarr_zip
+        - +optimize
+        - +parallel-netcdf
+        - +pic
+        - +shared
+        - +szip
+        - +zstd
+        - build_system=cmake
+        - "@4.9:"
+  specs:
+    - matrix:
+        - - netcdf-fortran
+          - netcdf-c
+          - hdf5
+          - $intel-oneapi-mkl
+        - - $cc
+  view: false

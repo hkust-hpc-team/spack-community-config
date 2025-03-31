@@ -1,0 +1,29 @@
+spack:
+  concretizer:
+    targets:
+      granularity: microarchitectures
+      host_compatible: false
+    unify: false
+  packages:
+    all:
+      require:
+        - one_of:
+            - "target=zen4 %aocc@:"
+            - "target=zen4 %gcc@12:"
+            - "target=x86_64_v4 %oneapi@:"
+            - "target=x86_64_v4 %gcc@11.5.0.spack"
+  specs:
+    - matrix:
+        - - libhugetlbfs
+          - jemalloc
+        - - "target=zen4 %aocc@5.0.0"
+          - "target=zen4 %aocc@4.2.0"
+          - "target=zen4 %gcc@14"
+          - "target=zen4 %gcc@13"
+          - "target=zen4 %gcc@12"
+          - "target=x86_64_v4 %oneapi@2025.0.4 ^intel-oneapi-runtime@2025%oneapi@2025.0.4"
+          - "target=x86_64_v4 %oneapi@2024.2.1 ^intel-oneapi-runtime@2024%oneapi@2024.2.1"
+          - "target=x86_64_v4 %oneapi@2023.2.4 ^intel-oneapi-runtime@2023%oneapi@2023.2.4"
+          - "target=x86_64_v4 %oneapi@2022.2.1 ^intel-oneapi-runtime@2022%oneapi@2022.2.1"
+          - "target=x86_64_v4 %oneapi@2021.4.0 ^intel-oneapi-runtime@2021%oneapi@2021.4.0"
+  view: false

@@ -1,0 +1,5 @@
+packages:
+  bdw-gc:
+    prefer:
+      - +libatomic-ops
+      - threads=posix

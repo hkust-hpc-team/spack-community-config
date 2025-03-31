@@ -1,0 +1,65 @@
+spack:
+  concretizer:
+    reuse: false
+    targets:
+      granularity: microarchitectures
+      host_compatible: false
+    unify: false
+  definitions:
+    - cc-targets:
+        - matrix:
+            - - target=x86_64
+              - target=zen
+              - target=x86_64_v2
+              - target=zen2
+              - target=x86_64_v3
+              - target=zen3
+              - target=x86_64_v4
+              - target=icelake
+              - target=sapphirerapids
+              - target=zen4
+            - - "%gcc@11.5.0.spack"
+    - test-autotools-pkgs:
+        - libsigsegv build_system=autotools
+        - lzo libs=shared,static build_system=autotools
+    - test-cmake-pkgs:
+        - blake3 build_system=cmake
+        - lz4 libs=shared,static +pic +ipo build_system=cmake
+    - test-makefile-pkgs:
+        - openlibm build_system=makefile
+        - mbedtls libs=shared,static +pic build_system=makefile
+    - test-asm:
+        - zlib-ng ~compat +ipo build_system=cmake
+  packages:
+    all:
+      providers:
+        zlib-api: ["zlib-ng+compat", "zlib"]
+      require:
+        - "%gcc@11.5.0.spack"
+    cmake:
+      externals:
+        - prefix: /usr
+          spec: cmake@3.26.5
+    glibc:
+      externals:
+        - prefix: /usr
+          spec: glibc@2.34
+    perl:
+      externals:
+        - prefix: /usr
+          spec: perl@5.32.1
+    python:
+      externals:
+        - prefix: /usr
+          spec: python@3.9.18
+        - prefix: /usr
+          spec: python@3.11.7
+  specs:
+    - matrix:
+        - - $test-autotools-pkgs
+          - $test-cmake-pkgs
+          - $test-makefile-pkgs
+          - $test-asm
+        - - $cc-targets
+  'upstreams:': {}
+  view: false
