@@ -1,0 +1,24 @@
+spack:
+  concretizer:
+    targets:
+      granularity: microarchitectures
+      host_compatible: false
+    unify: false
+  packages:
+    all:
+      require:
+        - one_of:
+            - "target=zen4 %aocc@:"
+            - "target=x86_64_v4 %gcc@11.5.0.spack"
+    gcc-runtime:
+      require:
+        - "target=x86_64_v4 %gcc@11.5.0.spack"
+  specs:
+    - matrix:
+        - - mpich
+        - - "@4"
+          - "@3"
+        - - "target=zen4"
+        - - "%aocc@5.0.0"
+          - "%aocc@4.2.0"
+  view: false

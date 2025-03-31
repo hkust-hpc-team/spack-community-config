@@ -1,0 +1,72 @@
+spack:
+  concretizer:
+    targets:
+      granularity: microarchitectures
+      host_compatible: false
+    unify: false
+  definitions:
+    - goals:
+        - "netcdf-fortran"
+        - "netcdf-c"
+        - "hdf5"
+    - ccs:
+        - matrix:
+            - - "target=zen4"
+            - - "%gcc@14"
+              - "%gcc@13"
+              - "%gcc@12"
+    - mpis:
+        - ^intel-oneapi-mpi@2021
+        - ^mpich@4
+        - ^mpich@3
+        - ^mvapich-plus@4
+        - ^openmpi@5
+        - ^openmpi@4
+  packages:
+    all:
+      require:
+        - one_of:
+            - "target=zen4 %gcc@12:"
+            - "target=x86_64_v4 %gcc@11.5.0.spack"
+    hdf5:
+      prefer:
+        - "@1.14:"
+        - +cxx
+        - +fortran
+        - +hl
+        - +map
+        - +mpi
+        - +shared
+        - +subfiling
+        - +szip
+        - +threadsafe
+        - +tools
+    netcdf-c:
+      prefer:
+        - "@4.9:"
+        - +blosc
+        - +byterange
+        - +fsync
+        - +logging
+        - +mpi
+        - +nczarr_zip
+        - +optimize
+        - +parallel-netcdf
+        - +pic
+        - +shared
+        - +szip
+        - +zstd
+    parallel-netcdf:
+      prefer:
+        - "@1.14:"
+        - +burstbuffer
+        - +cxx
+        - +fortran
+        - +pic
+        - +shared
+  specs:
+    - matrix:
+        - - $goals
+        - - $ccs
+        - - $mpis
+  view: false

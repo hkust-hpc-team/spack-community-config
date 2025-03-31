@@ -1,0 +1,84 @@
+packages:
+  intel-oneapi-mpi:
+    conflict:
+      - "%gcc@11.5.0.spack"
+    require:
+      - +external-libfabric
+      - one_of:
+          - "target=x86_64_v4 +generic-names %gcc@:"
+          - "target=zen3 %aocc@:"
+          - "%oneapi@:"
+          - "%intel@:"
+  libfabric:
+    require:
+      - +uring
+      - fabrics=mlx,rxd,rxm,shm,sockets,tcp,ucx,udp,verbs
+  mpich:
+    conflict:
+      - "%gcc@11.5.0.spack"
+    require:
+      - +fortran
+      - +hwloc
+      - +hydra
+      - +libxml2
+      - +pci
+      - +romio
+      - ~slurm
+      - +verbs
+      - +wrapperrpath
+      - datatype-engine=yaksa
+      - device=ch4
+      - netmod=ucx
+      - pmi=pmi2
+  munge:
+    buildable: false
+    externals:
+      - prefix: /usr
+        spec: munge@0.5.13
+  mvapich-plus:
+    require:
+      - +alloca
+      - +regcache
+      - +wrapperrpath
+      - netmod=ucx
+      - process_managers=hydra
+      - threads=multiple
+  openmpi:
+    conflict:
+      - "%gcc@11.5.0.spack"
+    require:
+      - +atomics
+      - ~cuda
+      - ~internal-hwloc
+      - ~internal-libevent
+      - ~internal-pmix
+      - ~lustre
+      - ~memchecker
+      - ~openshmem
+      - +romio
+      - +rsh
+      - +static
+      - fabrics=cma,ucx
+      - schedulers=none
+      - +wrapper-rpath
+  pmix:
+    require:
+      - +munge
+  slurm:
+    buildable: false
+    externals:
+      - prefix: /usr
+        spec: slurm@22-05-9-1
+  ucx:
+    require:
+      - +cma
+      - +dc
+      - +dm
+      - +knem
+      - +mlx5_dv
+      - +rc
+      - +rdmacm
+      - +thread_multiple
+      - +ucg
+      - +ud
+      - +verbs

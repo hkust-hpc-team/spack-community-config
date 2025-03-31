@@ -1,0 +1,22 @@
+spack:
+  concretizer:
+    targets:
+      granularity: microarchitectures
+      host_compatible: false
+    unify: false
+  packages:
+    all:
+      require:
+        - one_of:
+            - "target=zen4 %gcc@12:"
+            - "target=x86_64_v4 %gcc@11.5.0.spack"
+  specs:
+    - matrix:
+        - - openmpi
+        - - "@5"
+          - "@4"
+        - - "target=zen4"
+        - - "%gcc@14"
+          - "%gcc@13"
+          - "%gcc@12"
+  view: false
