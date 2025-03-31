@@ -1,0 +1,18 @@
+spack:
+  concretizer:
+    reuse: false
+    targets:
+      granularity: generic
+      host_compatible: true
+    unify: false
+  modules:
+    default:
+      lmod:
+        matlab:
+          template: modules/matlab-modulefile.lua
+  specs:
+    - matlab@R2019b
+    - matlab@R2022b
+    - matlab@R2023b
+    - matlab@R2024a
+  view: false

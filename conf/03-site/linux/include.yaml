@@ -9,6 +9,8 @@ include:
   - path: package-policies/compilers/llvm.yaml
   - path: package-policies/compilers/nvhpc.yaml
   - path: package-policies/compilers/oneapi.yaml
+  - path: package-policies/externals/gui-external.yaml
+  - path: package-policies/gui.yaml
   - path: package-policies/externals/mpi-external.yaml
   - path: package-policies/apps/boost.yaml
-  - path: package-policies/apps/hdf5-netcdf.yaml
+  - path: package-keys/matlab.yaml

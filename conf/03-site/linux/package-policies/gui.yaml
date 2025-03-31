@@ -1,0 +1,87 @@
+packages:
+  alsa-lib:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  at-spi2-core:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  atk:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  cairo:
+    require:
+      - +X
+      - +fc
+      - +ft
+      - +gobject
+      - +pdf
+      - +pic
+      - +png
+      - +shared
+      - +svg
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  font-util:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  fontconfig:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  freetype:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gdk-pixbuf:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gtkplus:
+    require:
+      - +cups
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gtkplus-2:
+    require:
+      - +cups
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  icu4c:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libxcb:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libxcomposite:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libxdamage:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libxkbcommon:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libxrandr:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  mesa:
+    require:
+      - +glx
+      - ~llvm
+      - +opengl
+      - +opengles
+      - +osmesa
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  pango:
+    require:
+      - +X
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  xcb-util:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  xcb-util-image:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  xcb-util-keysyms:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  xcb-util-renderutil:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  xkeyboard-config:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
