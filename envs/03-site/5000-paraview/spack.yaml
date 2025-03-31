@@ -1,0 +1,10 @@
+spack:
+  concretizer:
+    unify: false
+  packages:
+    libpng:
+      require:
+        - "@1.6.47"
+  specs:
+    - "paraview+adios2+fides+visitbridge+qt+cdi+eyedomelighting+fortran+hdf5~mpi+pagosa+raytracing+shared+tbb+python+openpmd+catalyst+libcatalyst use_vtkm=on"
+  view: false
