@@ -1,0 +1,17 @@
+spack:
+  concretizer:
+    targets:
+      granularity: generic
+      host_compatible: true
+  modules:
+    default:
+      lmod:
+        matlab:
+          template: matlab-template.lua
+  specs:
+    - matrix:
+        - - matlab@R2019b +build_dependencies mode=silent
+        - - $matlab_file_installation_key
+        - - $use_archive_2019b
+        - - target=x86_64_v4 %gcc@11.5.0.spack
+  view: false
