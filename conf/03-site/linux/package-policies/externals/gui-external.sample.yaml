@@ -1,0 +1,11 @@
+packages:
+  egl:
+    buildable: false
+    externals:
+      - prefix: /usr
+        spec: egl@1.7.0
+  glx:
+    buildable: false
+    externals:
+      - prefix: /usr
+        spec: glx@1.3.4
