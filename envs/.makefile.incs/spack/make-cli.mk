@@ -47,14 +47,14 @@ relock@%: %/spack.yaml
 	@echo "[$*] relock completed"
 
 $(BUILD_TARGETS):
-build@%: %/spack.yaml
+build@%: %/spack.lock
 	$(MAKE) $*/spack.build
 	@echo "[$*] build completed"
 
 $(REBUILD_TARGETS):
 rebuild@%: %/spack.yaml 
-	-rm $*/spack.build
-	$(MAKE) relock@$* $*/spack.build
+	-rm $*/spack.build $*/spack.lock
+	$(MAKE) $*/spack.build
 	@echo "[$*] rebuild completed"
 
 GENERATED_TARGETS := $(GENERATED_TARGETS) $(LOCK_TARGETS) $(RELOCK_TARGETS) $(BUILD_TARGETS) $(REBUILD_TARGETS)
