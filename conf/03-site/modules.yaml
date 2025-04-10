@@ -12,6 +12,10 @@ modules:
       hierarchy:
         - mpi
         - compiler
+      intel-oneapi-mpi:
+        environment:
+          'set:':
+            I_MPI_FABRICS: "shm:ofi"
       projections:
         all: "{name}/{version}-{target.name}"
         aocc: "{name}/{version}"
@@ -19,9 +23,6 @@ modules:
         intel-oneapi-compilers: "{name}/{version}"
         intel-oneapi-compilers-classic: "{name}/{version}"
         intel-oneapi-mpi: "{name}/{version}"
-        mpich: "{name}/{version}"
-        mvapich-plus: "{name}/{version}"
-        openmpi: "{name}/{version}"
   prefix_inspections:
     ./:
       - CMAKE_PREFIX_PATH
