@@ -46,7 +46,7 @@ packages:
       lua-lang: [lua-luajit-openresty, lua]
       luajit: [lua-luajit-openresty, lua-luajit]
       mkl: [intel-oneapi-mkl]
-      mpi: [openmpi, mpich, mvapich2, intel-oneapi-mpi]
+      mpi: [intel-oneapi-mpi]
       scalapack: [netlib-scalapack, amdscalapack, intel-oneapi-mkl]
       tbb: [intel-tbb]
       uuid: [libuuid]
