@@ -42,9 +42,4 @@ check:
 	exit $$_incomplete_build
 
 lmod:
-	spack_args="--delete-tree -y"; \
-	for env in $$(find -maxdepth 1 -mindepth 1 -type d | cut -d/ -f2); do \
-		echo spack -e $$env lmod refresh $$spack_args; \
-		spack -e $$env lmod refresh $$spack_args; \
-		spack_args="-y"; \
-	done
+	spack lmod refresh -y --delete-tree
