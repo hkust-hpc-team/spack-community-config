@@ -21,6 +21,9 @@ fi
 
 pushd $SPACK_ROOT
 
+declare _spack_branch="$(git rev-parse --abbrev-ref HEAD)"
+echo $_spack_branch >$SPACK_ROOT/.spack-config.variant.log
+
 pdm venv create -f "$(which $(ls /usr/bin/python3.1[012]))"
 pdm lock -d -G dev --python ">=3.10" --platform linux --implementation cpython
 pdm sync -d -G dev
