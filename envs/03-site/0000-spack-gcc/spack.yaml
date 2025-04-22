@@ -21,6 +21,9 @@ spack:
     unify: false
   packages::
     all:
+      permissions:
+        read: world
+        write: user
       require:
         - "target=x86_64_v4 %gcc@11.4.1.os"
   specs:
