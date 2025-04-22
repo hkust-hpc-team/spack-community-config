@@ -36,8 +36,7 @@ fi
 function get_variant() {
   local script_path=$1
   local variant
-  script_path="$(realpath "$script_path")"
-  variant="$(echo "$script_path" | grep -oP '(?<=\.spack-)[^/]*(?=/)')"
+  variant="$(cat $(dirname $(realpath $script_path))/../../../.spack-config.variant.log)"
   echo $variant
 }
 
@@ -51,8 +50,8 @@ function _spack_variant_init() {
   local _spack_confirm
   local _spack_root="/opt/shared/.spack-$_spack_variant"
   local _spack_system_config_path="$_spack_root/site/conf/02-system"
-  local _spack_user_config_path="$(realpath --canonicalize-missing ${SPACK_USER_CONFIG_PATH:-$HOME/.spack-$_spack_variant})"
-  local _spack_user_cache_path="$(realpath --canonicalize-missing ${SPACK_USER_CACHE_PATH:-$HOME/.spack-$_spack_variant})"
+  local _spack_user_config_path="$(realpath --canonicalize-missing $HOME/.spack-$_spack_variant)"
+  local _spack_user_cache_path="$(realpath --canonicalize-missing $HOME/.spack-$_spack_variant)"
 
   (
     echo
