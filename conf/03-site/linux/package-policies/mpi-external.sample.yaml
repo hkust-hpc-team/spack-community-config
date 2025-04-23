@@ -1,0 +1,20 @@
+packages:
+  munge:
+    buildable: false
+    externals:
+      - prefix: /usr
+        spec: munge@0.5.13
+  pmix:
+    externals:
+      - prefix: /usr
+        spec: pmix@3.2.3 +munge
+  rdma-core:
+    buildable: false
+    externals:
+      - prefix: /usr
+        spec: rdma-core@52.0
+  slurm:
+    buildable: false
+    externals:
+      - prefix: /usr
+        spec: slurm@22-05-9-1
