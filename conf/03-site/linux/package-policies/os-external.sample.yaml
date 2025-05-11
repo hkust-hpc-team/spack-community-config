@@ -1,0 +1,8 @@
+packages:
+  glibc:
+    buildable: false
+    externals:
+      - prefix: /usr
+        spec: glibc@2.41
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"

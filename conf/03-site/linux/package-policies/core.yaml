@@ -1,1 +1,36 @@
-packages: {}
+packages:
+  binutils:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  coreutils:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  diffutils:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  findutils:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gawk:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  openssh:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  openssl:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  patch:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  tar:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  zlib:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  zlib-ng:
+    prefer:
+      - "+compat"
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"

@@ -1,1 +1,163 @@
-packages: {}
+packages:
+  autoconf:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  automake:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  bazel:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  binutils:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  bison:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  ccache:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  cmake:
+    require:
+      - +ncurses
+      - ~qtgui
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  curl:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  cvs:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  doxygen:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  flex:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gawk:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gettext:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  git:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  git-lfs:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gmake:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gnuconfig:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  groff:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  iwyu:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  justbuild:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libtool:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libxcb:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libxcrypt:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  m4:
+    require:
+      - +sigsegv
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  meson:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  ninja:
+    require:
+      - +re2c
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  npm:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  perl:
+    require:
+      - "^zlib@:"
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  pkg-config:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  pkgconf:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-cython:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-flit-core:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-jupyter-packaging:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-jupyter-server:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-jupyterlab:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-meson-python:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-pip:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-pythran:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-setuptools:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-setuptools-scm:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  py-wheel:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  python:
+    prefer:
+      - ~pyexpat
+      - "@3.11"
+    require:
+      - +optimizations
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  python-venv:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  sccache:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  scons:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  sed:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  subversion:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  swig:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  texinfo:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  typescript:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  xcb-proto:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"

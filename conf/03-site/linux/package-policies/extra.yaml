@@ -8,9 +8,6 @@ packages:
   gdbm:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
-  gettext:
-    require:
-      - "target=x86_64_v4 %gcc@11.5.0.spack"
   gnutls:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
