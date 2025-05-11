@@ -14,11 +14,12 @@ spack:
         - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
     - matrix:
-        - - "intel-oneapi-compilers"
-        - - "@2025"
-          - "@2024"
-          - "@2023"
-          - "@2022"
-          - "@2021"
-    - intel-oneapi-compilers-classic@2021
+        - - "llvm"
+        - - "@20"
+          - "@19"
+          - "@18"
+          - "@17"
+          - "@16"
+          - "@15"
+        - - "target=x86_64_v4 %gcc@11.5.0.spack"
   view: false

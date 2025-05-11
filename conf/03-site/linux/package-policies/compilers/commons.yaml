@@ -1,0 +1,10 @@
+packages:
+  binutils:
+    require:
+      - +gas
+      - +gold
+      - +headers
+      - +ld
+      - +lto
+      - "@2.40:"
+      - "target=x86_64_v4 %gcc@11.5.0.spack"

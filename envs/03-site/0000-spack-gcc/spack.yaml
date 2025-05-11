@@ -3,7 +3,9 @@ spack:
     - compiler:
         environment: {}
         extra_rpaths: []
-        flags: {}
+        flags:
+          cflags: -std=gnu99
+          cxxflags: -std=gnu11
         modules: []
         operating_system: rocky9
         paths:

@@ -1,0 +1,30 @@
+packages:
+  llvm:
+    prefer:
+      - "@17"
+      - +clang
+      - +flang
+      - +gold
+      - +libomptarget
+      - +libomptarget_debug
+      - +lld
+      - +lldb
+      - +llvm_dylib +link_llvm_dylib
+      - +lua
+      - +polly
+      - ~python
+      - +split_dwarf
+      - targets=aarch64,amdgpu,arm,bpf,nvptx,webassembly,x86
+      - spec: +mlir
+        when: "@10:"
+      - compiler-rt=runtime
+      - libcxx=runtime
+      - libunwind=runtime
+      - openmp=runtime
+    require:
+      - ~z3
+      - spec: "+offload"
+        when: "@19:"
+      - spec: "+zstd"
+        when: "@15:"
+      - "target=x86_64_v4 %gcc@11.5.0.spack"

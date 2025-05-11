@@ -1,0 +1,13 @@
+packages:
+  gcc:
+    prefer:
+      - +bootstrap
+      - +graphite
+      - +mold
+      - ~nvptx
+      - +piclibs
+      - +profiled
+      - languages=c,c++,fortran,lto
+    require:
+      - +binutils
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
