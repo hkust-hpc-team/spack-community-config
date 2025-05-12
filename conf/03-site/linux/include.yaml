@@ -1,5 +1,5 @@
 include:
-  - path: package-policies/os-external.yaml
+  - path: package-policies/externals/os-external.yaml
   - path: package-policies/core.yaml
   - path: package-policies/build.yaml
   - path: package-policies/extra.yaml
@@ -9,7 +9,7 @@ include:
   - path: package-policies/compilers/llvm.yaml
   - path: package-policies/compilers/nvhpc.yaml
   - path: package-policies/compilers/oneapi.yaml
-  - path: package-policies/mpi-external.yaml
+  - path: package-policies/externals/mpi-external.yaml
   - path: package-policies/mpi-roce-slurm.yaml
   - path: package-policies/apps/boost.yaml
   - path: package-policies/apps/hdf5-netcdf.yaml
