@@ -33,7 +33,7 @@ packages:
       - schedulers=slurm
       - +wrapper-rpath
       - spec: +legacylaunchers
-        when: "@:4"
+        when: "@:4 schedulers=slurm"
   pmix:
     conflict:
       - "%gcc@11.5.0.spack"
