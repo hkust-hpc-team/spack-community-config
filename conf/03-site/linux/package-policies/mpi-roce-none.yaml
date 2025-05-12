@@ -1,0 +1,72 @@
+packages:
+  intel-oneapi-mpi:
+    conflict:
+      - "%gcc@11.5.0.spack"
+    require:
+      - one_of:
+          - "target=x86_64_v4 +generic-names %gcc@:"
+          - "target=zen3 %aocc@:"
+          - "%oneapi@:"
+          - "%intel@:"
+  libfabric:
+    conflict:
+      - "%gcc@11.5.0.spack"
+    require:
+      - +uring
+      - fabrics=mlx,shm,sockets,tcp,ucx,udp,verbs
+  openmpi:
+    conflict:
+      - "%gcc@11.5.0.spack"
+    require:
+      - +atomics
+      - ~cuda
+      - ~internal-hwloc
+      - ~internal-libevent
+      - ~internal-pmix
+      - ~lustre
+      - ~memchecker
+      - ~openshmem
+      - +romio
+      - +rsh
+      - +static
+      - fabrics=cma,ucx
+      - schedulers=none
+      - +wrapper-rpath
+      - spec: +legacylaunchers
+        when: "@:4 schedulers=slurm"
+  pmix:
+    conflict:
+      - "%gcc@11.5.0.spack"
+    prefer:
+      - "@5"
+    require:
+      - ~munge
+      - spec: +pmi_backwards_compatibility
+        when: "@:3"
+  ucx:
+    conflict:
+      - "%gcc@11.5.0.spack"
+    require:
+      - +cma
+      - ~cuda
+      - +dc
+      - +dm
+      - ~gdrcopy
+      - ~ib_hw_tm
+      - ~java
+      - +knem
+      - +mlx5_dv
+      - +openmp
+      - +optimizations
+      - +pic
+      - +rc
+      - +rdmacm
+      - ~rocm
+      - +thread_multiple
+      - +ucg
+      - +ud
+      - +verbs
+      - ~xpmem
+      - libs=shared,static
+      - opt=3
+      - simd=auto
