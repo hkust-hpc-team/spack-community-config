@@ -65,6 +65,28 @@ spack:
               - "%oneapi@2023.2.4"
               - "%oneapi@2024.2.1"
               - "%oneapi@2025.0.4"
+    - cc-llvm-targets:
+        - matrix:
+            - - target=x86_64
+              - target=zen
+              - target=x86_64_v2
+              - target=zen2
+              - target=x86_64_v3
+              - target=zen3
+              - target=x86_64_v4
+              - target=icelake
+              - target=sapphirerapids
+              - target=zen4
+            - - "%clang@15.0.7"
+              - "%clang@16.0.6"
+              - "%clang@17.0.6"
+              - "%clang@18.1.8"
+              - "%clang@19.1.7"
+              - "%clang@20.1.0"
+        - matrix:
+            - - target=zen5
+            - - "%clang@19.1.7"
+              - "%clang@20.1.0"
     - test-autotools-pkgs:
         - libsigsegv build_system=autotools
         - lzo libs=shared,static build_system=autotools
@@ -79,7 +101,7 @@ spack:
   modules:
     default:
       enable: []
-  'packages:':
+  "packages:":
     berkeley-db:
       require:
         - target=x86_64 %gcc@11.5.0.spack
@@ -99,6 +121,8 @@ spack:
       require:
         - target=x86_64 %gcc@11.5.0.spack
     gcc-runtime:
+      prefer:
+        - target=x86_64 %gcc@11.5.0.spack
       require:
         - "target=x86_64 %gcc@:"
     gdbm:
@@ -137,8 +161,5 @@ spack:
           - $test-makefile-pkgs
           - $test-cmake-pkgs
           - $test-asm
-        - - $cc-aocc-targets
-          - $cc-gcc-targets
-          - $cc-intel-targets
-          - $cc-oneapi-targets
+        - - $cc-gcc-targets
   view: false
