@@ -3,6 +3,7 @@ packages:
     compiler:
       - "gcc"
       - "aocc"
+      - "clang"
       - "intel"
       - "nvhpc"
       - "oneapi"
