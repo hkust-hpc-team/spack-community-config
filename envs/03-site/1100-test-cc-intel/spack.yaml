@@ -1,0 +1,165 @@
+spack:
+  concretizer:
+    reuse: false
+    targets:
+      granularity: microarchitectures
+      host_compatible: false
+    unify: false
+  definitions:
+    - cc-aocc-targets:
+        - matrix:
+            - - target=x86_64
+              - target=zen
+              - target=zen2
+              - target=zen3
+              - target=icelake
+              - target=zen4
+            - - "%aocc@4.2.0"
+              - "%aocc@5.0.0"
+        - matrix:
+            - - target=zen5
+            - - "%aocc@5.0.0"
+    - cc-gcc-targets:
+        - matrix:
+            - - target=x86_64
+              - target=zen
+              - target=x86_64_v2
+              - target=zen2
+              - target=x86_64_v3
+              - target=zen3
+              - target=x86_64_v4
+              - target=icelake
+              - target=sapphirerapids
+              - target=zen4
+            - - "%gcc@12.4.0"
+              - "%gcc@13.3.0"
+              - "%gcc@14.2.0"
+        - matrix:
+            - - target=zen5
+            - - "%gcc@14.2.0"
+    - cc-intel-targets:
+        - matrix:
+            - - target=x86_64
+              - target=zen
+              - target=x86_64_v2
+              - target=zen2
+              - target=x86_64_v3
+              - target=zen3
+              - target=x86_64_v4
+              - target=icelake
+              - target=sapphirerapids
+            - - "%intel@2021.10.0"
+    - cc-oneapi-targets:
+        - matrix:
+            - - target=x86_64
+              - target=zen
+              - target=x86_64_v2
+              - target=zen2
+              - target=x86_64_v3
+              - target=zen3
+              - target=x86_64_v4
+              - target=icelake
+              - target=sapphirerapids
+            - - "%oneapi@2021.4.0"
+              - "%oneapi@2022.2.1"
+              - "%oneapi@2023.2.4"
+              - "%oneapi@2024.2.1"
+              - "%oneapi@2025.0.4"
+    - cc-llvm-targets:
+        - matrix:
+            - - target=x86_64
+              - target=zen
+              - target=x86_64_v2
+              - target=zen2
+              - target=x86_64_v3
+              - target=zen3
+              - target=x86_64_v4
+              - target=icelake
+              - target=sapphirerapids
+              - target=zen4
+            - - "%clang@15.0.7"
+              - "%clang@16.0.6"
+              - "%clang@17.0.6"
+              - "%clang@18.1.8"
+              - "%clang@19.1.7"
+              - "%clang@20.1.0"
+        - matrix:
+            - - target=zen5
+            - - "%clang@19.1.7"
+              - "%clang@20.1.0"
+    - test-autotools-pkgs:
+        - libsigsegv build_system=autotools
+        - lzo libs=shared,static build_system=autotools
+    - test-cmake-pkgs:
+        - blake3 build_system=cmake
+        - lz4 libs=shared,static +pic +ipo build_system=cmake
+    - test-makefile-pkgs:
+        - openlibm build_system=makefile
+        - mbedtls libs=shared,static +pic build_system=makefile
+    - test-asm:
+        - zlib-ng ~compat +ipo build_system=cmake
+  modules:
+    default:
+      enable: []
+  "packages:":
+    berkeley-db:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    bzip2:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    ca-certificates-mozilla:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    cmake:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    curl:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    diffutils:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    gcc-runtime:
+      prefer:
+        - target=x86_64 %gcc@11.5.0.spack
+      require:
+        - "target=x86_64 %gcc@:"
+    gdbm:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    glibc:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    gmake:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    ncurses:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    nghttp2:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    openssl:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    perl:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    pkgconf:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    readline:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+    zlib:
+      require:
+        - target=x86_64 %gcc@11.5.0.spack
+  specs:
+    - matrix:
+        - - $test-autotools-pkgs
+          - $test-makefile-pkgs
+          - $test-cmake-pkgs
+          - $test-asm
+        - - $cc-intel-targets
+  view: false
