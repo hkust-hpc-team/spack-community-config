@@ -45,6 +45,7 @@ function _spack_variant_init() {
   local _spack_system_config_path="$_spack_root/site/conf/02-system"
   local _spack_user_config_path="$(realpath --canonicalize-missing $HOME/.spack-$_spack_variant)"
   local _spack_user_cache_path="$(realpath --canonicalize-missing $HOME/.spack-$_spack_variant)"
+  local _tmpdir="${TMPDIR:-/tmp/user-$(id -u)}"
 
   (
     echo
@@ -55,55 +56,49 @@ function _spack_variant_init() {
     echo
   ) >&2
 
-  if [ $_spack_no_confirm -eq 1 ]; then
-    echo "==> Forcing to activate spack instance [$_spack_variant]" >&2
-  else
-    read -p "==> Activate spack instance [$_spack_variant]? [y/N] " -r _spack_confirm
-    if [[ ! "$_spack_confirm" =~ ^[Yy]$ ]]; then
-      return 1
-    fi
-    (
-      echo
-      echo "i=> You can use '-y' option to skip this confirmation next time."
-      echo
-      sleep 3
-    ) >&2
-  fi
-
   (
-    echo "==> Checking spack config and cache paths"
-    echo
-    echo "    Shared apps and modules are located at $_spack_root/dist"
+    echo -e "==> Checking spack config and cache paths\n"
   ) >&2
 
-  if [[ "$_spack_user_config_path/" =~ "$HOME/.spack/" ]]; then
-    (
-      echo "E=> Refuse to use ~/.spack as spack config path"
-      echo "    Please unset SPACK_USER_CONFIG_PATH in environment, or contact $_spack_correspondent if you are unsure."
-    ) >&2
-    return 1
-  elif [ -d "${_spack_user_config_path}" ]; then
-    if ! (cat "${_spack_user_config_path}/.spack-config.variant" 2>/dev/null | grep -s -q "^$_spack_variant\$"); then
+  if [ "$SPACK_DISABLE_LOCAL_CONFIG" == "1" ]; then
+    echo "W=> Local config is disabled."
+    _spack_user_config_path="$_spack_root/var/spack"
+    _spack_user_cache_path="$_spack_root/var/spack"
+  else
+    if [[ "$_spack_user_config_path/" =~ "$HOME/.spack/" ]]; then
       (
-        echo "E=> Found existing spack config at ${_spack_user_config_path}"
-        echo "    But the config is not for [$_spack_variant]"
-        echo "    Please remove this directory if you want to use this path, or contact $_spack_correspondent if you are unsure."
+        echo "E=> Refuse to use ~/.spack as spack config path"
+        echo "    Please unset SPACK_USER_CONFIG_PATH in environment, or contact $_spack_correspondent if you are unsure."
       ) >&2
       return 1
+    elif [ -d "${_spack_user_config_path}" ]; then
+      if ! (cat "${_spack_user_config_path}/.spack-config.variant" 2>/dev/null | grep -s -q "^$_spack_variant\$"); then
+        (
+          echo "E=> Found existing spack config at ${_spack_user_config_path}"
+          echo "    But the config is not for [$_spack_variant]"
+          echo "    Please remove this directory if you want to use this path, or contact $_spack_correspondent if you are unsure."
+        ) >&2
+        return 1
+      fi
+    else
+      mkdir -p "${_spack_user_config_path}"
+      (
+        echo "$_spack_variant" >"${_spack_user_config_path}/.spack-config.variant"
+        echo "$_spack_variant" >"${_spack_user_config_path}/.spack-cache.variant"
+      ) >&2
     fi
-  else
-    mkdir -p "${_spack_user_config_path}"
-    (
-      echo "$_spack_variant" >"${_spack_user_config_path}/.spack-config.variant"
-      echo "$_spack_variant" >"${_spack_user_config_path}/.spack-cache.variant"
-    ) >&2
   fi
   (
+    echo
+    echo "    Spack instance root: $_spack_root"
+    echo "    Shared apps and modules: $_spack_root/dist"
     echo "    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    echo "    Your spack config is located at ${_spack_user_config_path}"
+    echo "    Your spack config: ${_spack_user_config_path}"
   ) >&2
 
-  if [[ "$_spack_user_cache_path/" =~ "$HOME/.spack/" ]]; then
+  if [ "$SPACK_DISABLE_LOCAL_CONFIG" == "1" ]; then
+    echo "W=> No checking when working on site config."
+  elif [[ "$_spack_user_cache_path/" =~ "$HOME/.spack/" ]]; then
     (
       echo "E=> Refuse to use ~/.spack as spack cache path"
       echo "    Please unset SPACK_USER_CACHE_PATH in environment, or contact $_spack_correspondent if you are unsure."
@@ -123,16 +118,37 @@ function _spack_variant_init() {
     echo "$_spack_variant" >"${_spack_user_cache_path}/.spack-cache.variant" >&2
   fi
   (
-    echo "    Your spack apps are located at ${_spack_user_cache_path}"
+    echo "    Your spack apps: ${_spack_user_cache_path}"
+    echo "    Tmpdir (TMPDIR and TMP): ${_tmpdir}"
     echo
   ) >&2
+
+  if [ $_spack_no_confirm -eq 1 ]; then
+    echo "==> Activating spack instance [$_spack_variant] with no confirm" >&2
+  else
+    read -p "==> Activate spack instance [$_spack_variant]? [y/N] " -r _spack_confirm
+    if [[ ! "$_spack_confirm" =~ ^[Yy]$ ]]; then
+      return 1
+    fi
+    (
+      echo
+      echo "i=> You can use '-y' option to skip this confirmation next time."
+      echo
+      sleep 3
+    ) >&2
+  fi
+
   export SPACK_VARIANT="$_spack_variant"
   export SPACK_ROOT="$_spack_root"
   export SPACK_SYSTEM_CONFIG_PATH="$_spack_system_config_path"
   export SPACK_USER_CONFIG_PATH="$_spack_user_config_path"
-  export SPACK_USER_CACHE_PATH="$_spack_user_cache_path"
-  export TMPDIR="${TMPDIR:-/dev/shm/user-$(id -u)}"
-  export TMP="${TMPDIR}"
+  if [ "$SPACK_DISABLE_LOCAL_CONFIG=" == "1" ]; then
+    export SPACK_USER_CACHE_PATH="$SPACK_ROOT/var/spack"
+  else
+    export SPACK_USER_CACHE_PATH="$_spack_user_cache_path"
+  fi
+  export TMPDIR="$_tmpdir"
+  export TMP="$TMPDIR"
   mkdir -p "$TMP"
   return $?
 }
