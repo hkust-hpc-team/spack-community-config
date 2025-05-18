@@ -33,22 +33,15 @@ else
   _spack_no_confirm=0
 fi
 
-function get_variant() {
-  local script_path=$1
-  local variant
-  variant="$(cat $(dirname $(realpath $script_path))/../../../.spack-config.variant.log)"
-  echo $variant
-}
-
-declare _spack_variant="$(get_variant $_spack_script_path)"
-unset -f get_variant
-unset _spack_script_path
-
+# Settings
 declare _spack_correspondent="kftse   (kftse@ust.hk)"
+declare _spack_root="$(realpath $(dirname $(realpath $_spack_script_path))/../../..)"
+declare _spack_variant="$(cat $_spack_root/.spack-config.variant.log))"
+
+unset _spack_script_path
 
 function _spack_variant_init() {
   local _spack_confirm
-  local _spack_root="/opt/shared/.spack-$_spack_variant"
   local _spack_system_config_path="$_spack_root/site/conf/02-system"
   local _spack_user_config_path="$(realpath --canonicalize-missing $HOME/.spack-$_spack_variant)"
   local _spack_user_cache_path="$(realpath --canonicalize-missing $HOME/.spack-$_spack_variant)"
@@ -147,7 +140,7 @@ function _spack_variant_init() {
 _spack_variant_init
 _spack_variant_init_ret=$?
 unset -f _spack_variant_init
-unset _spack_variant _spack_no_confirm _spack_root _spack_system_config_path _spack_user_config_path _spack_user_cache_path
+unset _spack_no_confirm _spack_system_config_path _spack_user_config_path _spack_user_cache_path _spack_variant _spack_root
 if [ $_spack_variant_init_ret -eq 0 ]; then
   unset _spack_variant_init_ret
   echo "==> Setting up spack [$SPACK_VARIANT] environment" >&2
