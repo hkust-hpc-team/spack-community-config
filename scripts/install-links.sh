@@ -15,14 +15,19 @@ if [ "$USER" == "root" ]; then
   exit 1
 fi
 
-declare python31x_cmd="$(which $(ls /usr/bin/python3.1[0123]))"
+declare python3_cmd="$(which $(ls /usr/bin/python3.1[0123]))"
+if [ -z "$python3_cmd" ]; then
+  echo "W: Python >=3.10,<=3.13 not found"
+  echo "W: Trying python 3.9 (experimental)"
+  python3_cmd="$(which $(ls /usr/bin/python3.9))"
+fi
 declare git_cmd="$(which git)"
 declare ls_cmd="ls -l --color=always"
 declare ln_cmd="ln -sfn"
 declare mkdir_cmd="mkdir -p"
 
-if [ -z "$python31x_cmd" ]; then
-  echo "E: Python >=3.10,<=3.13 not found"
+if [ -z "$python3_cmd" ]; then
+  echo "E: Python >=3.9,<=3.13 not found"
   exit 1
 fi
 if [ -z "$git_cmd" ]; then
@@ -53,14 +58,14 @@ echo "==> Spack branch: $_spack_branch"
 $git_cmd -C site submodule update --init --recursive --force --remote
 
 if [ "$ENABLE_DEVELOPMENT" == "1" ]; then
-  pdm venv create -f $python31x_cmd
-  pdm lock -d -G dev --python ">=3.10" --platform linux --implementation cpython
+  pdm venv create -f $python3_cmd
+  pdm lock -d -G dev --python ">=3.9,<=3.13" --platform linux --implementation cpython
   pdm sync -d -G dev
 
   (
     pushd site
-    pdm venv create -f $python31x_cmd
-    pdm lock -d -G dev --python ">=3.10" --platform linux --implementation cpython
+    pdm venv create -f $python3_cmd
+    pdm lock -d -G dev --python ">=3.9,<=3.13" --platform linux --implementation cpython
     pdm sync -d -G dev
     popd
   )
