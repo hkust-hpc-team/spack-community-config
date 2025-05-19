@@ -6,9 +6,10 @@ fi
 
 set -euo pipefail
 
+# TODO: Modify these variables to your needs
 declare ENABLE_DEVELOPMENT="1"
-declare SPACK_LICENSES_PATH="/opt/spack/spack-src/licenses"
-declare SPACK_SOURCE_CACHE_PATH="/opt/spack/spack-src/installers"
+# declare SPACK_LICENSES_PATH=""
+# declare SPACK_SOURCE_CACHE_PATH=""
 
 if [ "$USER" == "root" ]; then
   echo "E: Do not run this script as root"
@@ -42,12 +43,42 @@ if [ "$ENABLE_DEVELOPMENT" == "1" ]; then
   fi
 fi
 
-if [ -z "$SPACK_ROOT" ]; then
-  echo "E: SPACK_ROOT not set"
-  echo "E: Please set SPACK_ROOT to the root of the Spack installation"
-  echo "E: This package should be under \$SPACK_ROOT/site"
+if [ -z "${SPACK_ROOT:-}" ]; then
+  echo "W: This repo should be under \$SPACK_ROOT/site"
+  declare _spack_root="$(realpath $(dirname $0)/../..)"
+  read -p "Please confirm \$SPACK_ROOT: [$_spack_root] (y/n) " answer
+  if [ "$answer" == "y" ]; then
+    export SPACK_ROOT="$_spack_root"
+  else
+    echo "E: Please set SPACK_ROOT to the root of the Spack installation"
+    echo "E: SPACK_ROOT not set"
+    exit 1
+  fi
+fi
+
+export SPACK_LICENSES_PATH="${SPACK_LICENSES_PATH:-$SPACK_ROOT/opt/licenses}"
+export SPACK_SOURCE_CACHE_PATH="${SPACK_SOURCE_CACHE_PATH:-$SPACK_ROOT/opt/installers}"
+
+echo
+echo "Installation summary:"
+echo "  Package detection:"
+echo "    Python: $python3_cmd"
+echo "    Git: $git_cmd"
+echo "    PDM: $pdm_cmd"
+echo "  Configs:"
+echo "   SPACK_ROOT: $SPACK_ROOT"
+echo "   SPACK_LICENSES_PATH: $SPACK_LICENSES_PATH"
+echo "   SPACK_SOURCE_CACHE_PATH: $SPACK_SOURCE_CACHE_PATH"
+echo "   ENABLE_DEVELOPMENT: $ENABLE_DEVELOPMENT"
+echo
+
+read -p "Please confirm to start installation: [y/n] " answer
+if [ "$answer" != "y" ]; then
+  echo "E: Installation aborted"
   exit 1
 fi
+echo "==> Starting installation"
+
 
 pushd $SPACK_ROOT
 
