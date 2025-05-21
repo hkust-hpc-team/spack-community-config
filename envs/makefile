@@ -43,3 +43,16 @@ check:
 
 lmod:
 	spack lmod refresh -y --delete-tree
+
+compiler-find:
+	spack compiler find \
+		$(SPACK_ROOT)/opt/spack/linux-*-x86_64_v4/gcc-*.spack/{aocc,gcc,intel-oneapi-compilers-classic,llvm}-[0-9]* \
+		$(SPACK_ROOT)/opt/spack/linux-*-x86_64_v4/gcc-*.spack/intel-oneapi-compilers-2*/compiler/2*/{,linux}
+	$(MAKE) clean
+
+compiler-find-os:
+	-rm $(SPACK_ROOT)/etc/spack/linux/compilers.yaml
+	spack compiler find \
+		$(SPACK_ROOT)/opt/spack/linux-*-x86_64_v4/gcc-*.os/gcc-11.5.0-*
+	sed 's|gcc@=11.5.0|gcc@=11.5.0.spack|g' -i $(SPACK_ROOT)/etc/spack/linux/compilers.yaml
+	$(MAKE) clean
