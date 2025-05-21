@@ -1,4 +1,9 @@
 packages:
+  knem:
+    buildable: false
+    externals:
+      - prefix: /opt/knem-1.1.4.90mlnx3
+        spec: knem@1.1.4
   munge:
     buildable: false
     externals:
