@@ -4,6 +4,11 @@ packages:
     externals:
       - prefix: /usr
         spec: munge@0.5.13
+  mvapich-plus:
+    buildable: false
+    externals:
+      - prefix: /opt/mvapich/plus/4.0/.ucx/mpirun/gcc13.2.0/
+        spec: mvapich-plus@4 ~cuda ~rocm netmod=ucx process_managers=slurm
   pmix:
     externals:
       - prefix: /usr
