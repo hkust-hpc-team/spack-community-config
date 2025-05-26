@@ -44,7 +44,6 @@ gc:
 			| xargs -r -t -P $(NPROC) -i spack uninstall --force -y {}; \
 	done
 	spack clean -dfms
-	spack reindex
 	- spack gc -E -b -y
 
 clean:
