@@ -79,7 +79,6 @@ if [ "$answer" != "y" ]; then
 fi
 echo "==> Starting installation"
 
-
 pushd $SPACK_ROOT
 
 declare _spack_branch="$(git rev-parse --abbrev-ref HEAD)"
@@ -102,9 +101,7 @@ if [ "$ENABLE_DEVELOPMENT" == "1" ]; then
   )
 fi
 
-$mkdir_cmd dist opt/spack/apps
-$mkdir_cmd var/spack var/spack/{bootstrap,cache}
-$mkdir_cmd share/spack/lmod
+$mkdir_cmd dist
 $mkdir_cmd $SPACK_SOURCE_CACHE_PATH $SPACK_LICENSES_PATH
 
 $ln_cmd $SPACK_ROOT/site/envs/03-site var/spack/environments
@@ -145,6 +142,5 @@ if [ ! -d var/spack/bootstrap ]; then
   unset SPACK_USER_CACHE_PATH="$(pwd)/var/spack"
 fi
 
-set -x
-
 $ls_cmd dist
+echo "==> Installation completed successfully"

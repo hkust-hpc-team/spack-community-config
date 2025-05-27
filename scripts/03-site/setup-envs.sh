@@ -63,8 +63,8 @@ function _spack_variant_init() {
 
   if [ "$_spack_disable_local_config" == "1" ]; then
     echo "W=> Local config is disabled."
-    _spack_user_config_path="$_spack_root/var/spack"
-    _spack_user_cache_path="$_spack_root/var/spack"
+    _spack_user_config_path="$_spack_root/opt/spack"
+    _spack_user_cache_path="$_spack_root/opt/spack"
   else
     if [[ "$_spack_user_config_path/" =~ "$HOME/.spack/" ]]; then
       (
