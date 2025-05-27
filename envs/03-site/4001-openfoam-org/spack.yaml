@@ -1,0 +1,7 @@
+spack:
+  concretizer:
+    targets:
+      granularity: generic
+  specs:
+    - openfoam-org@12 target=x86_64_v4 %oneapi@2025 ^intel-oneapi-mpi target=x86_64_v4 %oneapi@2025
+  view: false
