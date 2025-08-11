@@ -22,13 +22,13 @@ function amplitude_track_spack_activate(){
   local _amplitude_slurm_job_id=${SLURM_JOB_ID:-""}
 
   if [ -z "$_amplitude_api_key" ]; then
-    echo "E: Please set _amplitude_api_key"
-    exit 0
+    echo "W: Amplitude API key is not set. Skipping usage tracking." >&2
+    return 0
   fi
 
   if [ -z "$_amplitude_cluster_id" ]; then
-    echo "E: Please set _amplitude_cluster_id to the cluster name"
-    exit 0
+    echo "W: Amplitude cluster ID is not set. Skipping usage tracking." >&2
+    return 0
   fi
   local _amplitude_slurm_props
   if [ -z "$_amplitude_slurm_job_id" ]; then
