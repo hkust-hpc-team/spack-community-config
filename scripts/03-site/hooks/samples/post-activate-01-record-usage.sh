@@ -49,7 +49,7 @@ function amplitude_track_spack_activate(){
             \"spack_disable_local_config\": \"${_amplitude_spack_disable_local_config}\",
             \"spack_root\": \"${_amplitude_spack_root}\",
             \"spack_user_cache_path\": \"${_amplitude_spack_user_cache_path}\",
-            \"spack_user_config_path\": \"${_amplitude_spack_user_config_path}\",
+            \"spack_user_config_path\": \"${_amplitude_spack_user_config_path}\"
           },
           \"user_properties\": {
             \"cluster\": \"${_amplitude_cluster_id}\",
@@ -80,7 +80,7 @@ function amplitude_track_spack_activate(){
           },
           \"user_properties\": {
             \"cluster\": \"${_amplitude_cluster_id}\",
-            \"username\": \"${_amplitude_username}\",
+            \"username\": \"${_amplitude_username}\"
           }
         }]
       }" >/dev/null

@@ -9,4 +9,4 @@ for _pre_activate_hook in $SPACK_ROOT/dist/bin/hooks/pre-activate-*.sh; do
   fi
 done
 
-unset -f _pre_activate_hook
+unset _pre_activate_hook
