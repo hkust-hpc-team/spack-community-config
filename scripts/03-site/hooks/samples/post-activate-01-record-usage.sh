@@ -4,7 +4,7 @@ _amplitude_api_key=""
 _amplitude_cluster_id=""
 
 function amplitude_track_spack_activate(){
-  local _curl_cmd="$(which curl) -s"
+  local _curl_cmd="$(command -v curl) -s"
 
   # Create session name from cluster, user, and date
   local _amplitude_username=$(whoami)
