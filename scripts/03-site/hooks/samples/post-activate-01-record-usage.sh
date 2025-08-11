@@ -5,6 +5,11 @@ _amplitude_cluster_id=""
 
 function amplitude_track_spack_activate(){
   local _curl_cmd="$(command -v curl) -s"
+  if [ -z "$_curl_cmd" ]; then
+    echo "Error: curl command not found" >&2
+    return 1
+  fi
+  _curl_cmd="${_curl_cmd} -s"
 
   # Create session name from cluster, user, and date
   local _amplitude_username=$(whoami)
