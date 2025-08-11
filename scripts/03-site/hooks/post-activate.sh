@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for _post_activate_hook in $SPACK_ROOT/dist/bin/hooks/post-activate-*.sh; do
+for _post_activate_hook in $(ls $SPACK_ROOT/dist/bin/hooks/post-activate-*.sh); do
   if [ -x "$_post_activate_hook" ]; then
     "$_post_activate_hook" ||
     echo "E=> Failed to run post-activate hook: $_post_activate_hook" >&2
