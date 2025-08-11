@@ -171,7 +171,7 @@ if [ $_spack_variant_init_ret -eq 0 ]; then
       echo "W=> Pre-activate hook is not executable" >&2
     fi
   else
-      echo "W=> No pre-activate hook found" >&2
+    echo "W=> No pre-activate hook found" >&2
   fi
   source $SPACK_ROOT/share/spack/setup-env.sh
   if [ ! -d "$SPACK_USER_CACHE_PATH/bootstrap" ]; then
@@ -192,7 +192,7 @@ if [ $_spack_variant_init_ret -eq 0 ]; then
       echo "W=> Post-activate hook is not executable" >&2
     fi
   else
-      echo "W=> No post-activate hook found" >&2
+    echo "W=> No post-activate hook found" >&2
   fi
   (
     echo "==> Spack [$SPACK_VARIANT] environment is ready"
