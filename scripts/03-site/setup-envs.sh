@@ -163,6 +163,16 @@ if [ $_spack_variant_init_ret -eq 0 ]; then
   echo "==> Setting up spack [$SPACK_VARIANT] environment" >&2
   export MODULEPATH="$(echo $MODULEPATH | tr ':' '\n' | grep -v 'spack' | tr '\n' ':')"
   module use $SPACK_ROOT/dist/lmod/linux-*/Core || true
+  if [ -f "$SPACK_ROOT/dist/bin/hooks/pre-activate.sh" ] ; then
+    if  [ -x "$SPACK_ROOT/dist/bin/hooks/pre-activate.sh" ]; then
+      "$SPACK_ROOT/dist/bin/hooks/pre-activate.sh" || 
+      echo "E=> Failed to run pre-activate hook" >&2
+    else 
+      echo "W=> Pre-activate hook is not executable" >&2
+    fi
+  else
+      echo "W=> No pre-activate hook found" >&2
+  fi
   source $SPACK_ROOT/share/spack/setup-env.sh
   if [ ! -d "$SPACK_USER_CACHE_PATH/bootstrap" ]; then
     if [ ! -e "$SPACK_USER_CACHE_PATH/config.yaml" ]; then
@@ -173,6 +183,16 @@ if [ $_spack_variant_init_ret -eq 0 ]; then
       echo "    This may take a few minutes, please wait..."
     ) >&2
     spack bootstrap now
+  fi
+  if [ -f "$SPACK_ROOT/dist/bin/hooks/post-activate.sh" ] ; then
+    if [ -x "$SPACK_ROOT/dist/bin/hooks/post-activate.sh" ]; then
+      "$SPACK_ROOT/dist/bin/hooks/post-activate.sh" || 
+      echo "E=> Failed to run post-activate hook" >&2
+    else
+      echo "W=> Post-activate hook is not executable" >&2
+    fi
+  else
+      echo "W=> No post-activate hook found" >&2
   fi
   (
     echo "==> Spack [$SPACK_VARIANT] environment is ready"

@@ -1,0 +1,93 @@
+#!/bin/bash
+
+_amplitude_api_key=""
+_amplitude_cluster_id=""
+
+function amplitude_track_spack_activate(){
+  _curl_cmd="$(which curl) -s"
+
+  # Create session name from cluster, user, and date
+  _amplitude_username=$(whoami)
+  _amplitude_user_id="${_amplitude_username}@${_amplitude_cluster_id}"
+  _amplitude_session_date=$(date +%Y-%m-%d)
+  _amplitude_session_name="${_amplitude_username}@${_amplitude_cluster_id}/${_amplitude_session_date}"
+
+  # Collect system information
+  _amplitude_hostname=$(hostname)
+  _amplitude_spack_user_cache_path=${SPACK_USER_CACHE_PATH:-"unknown"}
+  _amplitude_spack_user_config_path=${SPACK_USER_CONFIG_PATH:-"unknown"}
+  _amplitude_spack_disable_local_config=${SPACK_DISABLE_LOCAL_CONFIG:-"0"}
+  _amplitude_spack_root=${SPACK_ROOT:-"unknown"}
+  _amplitude_spack_variant=${SPACK_VARIANT:-"unknown"}
+  _amplitude_slurm_job_id=${SLURM_JOB_ID:-""}
+
+  if [ -z "$_amplitude_api_key" ]; then
+    echo "E: Please set _amplitude_api_key"
+    exit 0
+  fi
+
+  if [ -z "$_amplitude_cluster_id" ]; then
+    echo "E: Please set _amplitude_cluster_id to the cluster name"
+    exit 0
+  fi
+
+  if [ -z "$_amplitude_slurm_job_id" ]; then
+    $_curl_cmd -X POST https://api2.amplitude.com/2/httpapi \
+      -H 'Content-Type: application/json' \
+      -H 'Accept: */*' \
+      --data "{
+        \"api_key\": \"${_amplitude_api_key}\",
+        \"events\": [{
+          \"device_id\": \"${_amplitude_session_name}\",
+          \"user_id\": \"${_amplitude_user_id}\",
+          \"event_type\": \"Activate Spack\",
+          \"event_properties\": {
+            \"cluster\": \"${_amplitude_cluster_id}\",
+            \"username\": \"${_amplitude_username}\",
+            \"hostname\": \"${_amplitude_hostname}\",
+            \"spack_variant\": \"${_amplitude_spack_variant}\",
+            \"spack_disable_local_config\": \"${_amplitude_spack_disable_local_config}\",
+            \"spack_root\": \"${_amplitude_spack_root}\",
+            \"spack_user_cache_path\": \"${_amplitude_spack_user_cache_path}\",
+            \"spack_user_config_path\": \"${_amplitude_spack_user_config_path}\",
+          },
+          \"user_properties\": {
+            \"cluster\": \"${_amplitude_cluster_id}\",
+            \"username\": \"${_amplitude_username}\",
+          }
+        }]
+      }" >/dev/null
+  else
+    $_curl_cmd -X POST https://api2.amplitude.com/2/httpapi \
+      -H 'Content-Type: application/json' \
+      -H 'Accept: */*' \
+      --data "{
+        \"api_key\": \"${_amplitude_api_key}\",
+        \"events\": [{
+          \"device_id\": \"${_amplitude_session_name}\",
+          \"user_id\": \"${_amplitude_user_id}\",
+          \"event_type\": \"Activate Spack\",
+          \"event_properties\": {
+            \"cluster\": \"${_amplitude_cluster_id}\",
+            \"username\": \"${_amplitude_username}\",
+            \"hostname\": \"${_amplitude_hostname}\",
+            \"spack_variant\": \"${_amplitude_spack_variant}\",
+            \"spack_disable_local_config\": \"${_amplitude_spack_disable_local_config}\",
+            \"spack_root\": \"${_amplitude_spack_root}\",
+            \"spack_user_cache_path\": \"${_amplitude_spack_user_cache_path}\",
+            \"spack_user_config_path\": \"${_amplitude_spack_user_config_path}\",
+            \"slurm_job_id\": \"${_amplitude_slurm_job_id}\"
+          },
+          \"user_properties\": {
+            \"cluster\": \"${_amplitude_cluster_id}\",
+            \"username\": \"${_amplitude_username}\",
+          }
+        }]
+      }" >/dev/null
+  fi
+}
+
+amplitude_track_spack_activate
+unset -f amplitude_track_spack_activate
+unset _amplitude_api_key
+unset _amplitude_cluster_id
