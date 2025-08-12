@@ -28,6 +28,6 @@ packages:
             - spec: use_archive=file:///opt/shared/installers/matlab/matlab-R2024b-archive.tar
               when: "@R2024b"
         require:
-            - spec: key=0
+            - spec: key=00000-00000-00000-00000-00000-00000-00000-00000-00000-00000-00000-00000-00000-00000-00000-00000-00000-00000
               when: "@:R2024a"
             - "target=x86_64_v4 %gcc@11.5.0.spack"
