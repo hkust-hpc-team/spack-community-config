@@ -87,7 +87,7 @@ echo "==> Starting installation"
 pushd $SPACK_ROOT
 
 declare _spack_branch="$(git rev-parse --abbrev-ref HEAD)"
-echo $_spack_branch > $SPACK_ROOT/.spack-config.variant.log
+echo "$_spack_branch" > "$SPACK_ROOT/.spack-config.variant.log"
 echo "==> Spack branch: $_spack_branch"
 
 $git_cmd -C site submodule update --init --recursive --force --remote
@@ -129,6 +129,7 @@ $mkdir_cmd etc/spack
 $ln_cmd $SPACK_ROOT/site/conf/03-site/concretizer.yaml etc/spack/concretizer.yaml
 $ln_cmd $SPACK_ROOT/site/conf/03-site/config.yaml etc/spack/config.yaml
 $ln_cmd $SPACK_ROOT/site/conf/03-site/linux etc/spack/linux
+
 $cp_cmd $SPACK_ROOT/etc/spack/linux/package-policies/externals/gui-external.sample.yaml $SPACK_ROOT/etc/spack/linux/package-policies/externals/gui-external.yaml
 $cp_cmd $SPACK_ROOT/etc/spack/linux/package-policies/externals/mpi-external.sample.yaml $SPACK_ROOT/etc/spack/linux/package-policies/externals/mpi-external.yaml
 $cp_cmd $SPACK_ROOT/etc/spack/linux/package-policies/externals/os-external.sample.yaml $SPACK_ROOT/etc/spack/linux/package-policies/externals/os-external.yaml
