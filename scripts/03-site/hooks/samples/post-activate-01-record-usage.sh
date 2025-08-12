@@ -2,7 +2,8 @@
 
 _amplitude_api_key=""
 _amplitude_cluster_id=""
-function amplitude_track_spack_activate(){
+
+function amplitude_track_spack_activate() {
   local _curl_cmd="$(command -v curl)"
   if [ -z "$_curl_cmd" ]; then
     echo "Error: curl command not found" >&2
