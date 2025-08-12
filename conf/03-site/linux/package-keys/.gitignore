@@ -1,4 +1,4 @@
 # You can declare your text license keys as definitions for your user
 # Do not track keys in repo
 *.yaml
-!matlab.yaml
+!*.sample.yaml
