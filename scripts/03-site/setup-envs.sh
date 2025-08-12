@@ -143,7 +143,7 @@ function _spack_variant_init() {
   export SPACK_ROOT="$_spack_root"
   export SPACK_SYSTEM_CONFIG_PATH="$_spack_system_config_path"
   export SPACK_USER_CONFIG_PATH="$_spack_user_config_path"
-  if [ "$_spack_disable_local_config=" == "1" ]; then
+  if [ "$_spack_disable_local_config" == "1" ]; then
     export SPACK_USER_CACHE_PATH="$SPACK_ROOT/var/spack"
   else
     export SPACK_USER_CACHE_PATH="$_spack_user_cache_path"
