@@ -25,6 +25,7 @@ fi
 declare git_cmd="$(which git)"
 declare ls_cmd="ls -l --color=always"
 declare ln_cmd="ln -sfn"
+declare cp_cmd="cp -rf"
 declare mkdir_cmd="mkdir -p"
 
 if [ -z "$python3_cmd" ]; then
@@ -60,7 +61,7 @@ export SPACK_LICENSES_PATH="${SPACK_LICENSES_PATH:-$SPACK_ROOT/opt/licenses}"
 export SPACK_SOURCE_CACHE_PATH="${SPACK_SOURCE_CACHE_PATH:-$SPACK_ROOT/opt/installers}"
 
 echo
-echo "Installation summary:"
+echo "Installation summary: (You can change them in $SPACK_ROOT/site/scripts/install-links.sh)"
 echo "  Package detection:"
 echo "    Python: $python3_cmd"
 echo "    Git: $git_cmd"
@@ -82,7 +83,7 @@ echo "==> Starting installation"
 pushd $SPACK_ROOT
 
 declare _spack_branch="$(git rev-parse --abbrev-ref HEAD)"
-echo $_spack_branch >$SPACK_ROOT/.spack-config.variant.log
+echo $_spack_branch > $SPACK_ROOT/.spack-config.variant.log
 echo "==> Spack branch: $_spack_branch"
 
 $git_cmd -C site submodule update --init --recursive --force --remote
@@ -124,10 +125,15 @@ $mkdir_cmd etc/spack
 $ln_cmd $SPACK_ROOT/site/conf/03-site/concretizer.yaml etc/spack/concretizer.yaml
 $ln_cmd $SPACK_ROOT/site/conf/03-site/config.yaml etc/spack/config.yaml
 $ln_cmd $SPACK_ROOT/site/conf/03-site/linux etc/spack/linux
+$cp_cmd $SPACK_ROOT/etc/spack/linux/package-policies/externals/gui-external.sample.yaml $SPACK_ROOT/etc/spack/linux/package-policies/externals/gui-external.yaml
+$cp_cmd $SPACK_ROOT/etc/spack/linux/package-policies/externals/mpi-external.sample.yaml $SPACK_ROOT/etc/spack/linux/package-policies/externals/mpi-external.yaml
+$cp_cmd $SPACK_ROOT/etc/spack/linux/package-policies/externals/os-external.sample.yaml $SPACK_ROOT/etc/spack/linux/package-policies/externals/os-external.yaml
+
 $ln_cmd $SPACK_LICENSES_PATH etc/spack/licenses
 $ln_cmd $SPACK_ROOT/site/conf/03-site/mirrors.yaml etc/spack/mirrors.yaml
 $ln_cmd $SPACK_ROOT/site/conf/03-site/modules.yaml etc/spack/modules.yaml
 $ln_cmd $SPACK_ROOT/site/conf/03-site/repos.yaml etc/spack/repos.yaml
+
 echo "==> Configured directory: etc/spack"
 $ls_cmd etc/spack
 
