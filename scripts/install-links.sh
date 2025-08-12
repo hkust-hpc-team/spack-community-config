@@ -25,6 +25,7 @@ fi
 declare git_cmd="$(which git)"
 declare ls_cmd="ls -l --color=always"
 declare ln_cmd="ln -sfn"
+declare cp_cmd="cp -rf"
 declare mkdir_cmd="mkdir -p"
 
 if [ -z "$python3_cmd" ]; then
@@ -128,9 +129,9 @@ $mkdir_cmd etc/spack
 $ln_cmd $SPACK_ROOT/site/conf/03-site/concretizer.yaml etc/spack/concretizer.yaml
 $ln_cmd $SPACK_ROOT/site/conf/03-site/config.yaml etc/spack/config.yaml
 $ln_cmd $SPACK_ROOT/site/conf/03-site/linux etc/spack/linux
-cp etc/spack/linux/package-policies/externals/gui-external.sample.yaml etc/spack/linux/package-policies/externals/gui-external.yaml
-cp etc/spack/linux/package-policies/externals/mpi-external.sample.yaml etc/spack/linux/package-policies/externals/mpi-external.yaml
-cp etc/spack/linux/package-policies/externals/os-external.sample.yaml etc/spack/linux/package-policies/externals/os-external.yaml
+$cp_cmd $SPACK_ROOT/etc/spack/linux/package-policies/externals/gui-external.sample.yaml $SPACK_ROOT/etc/spack/linux/package-policies/externals/gui-external.yaml
+$cp_cmd $SPACK_ROOT/etc/spack/linux/package-policies/externals/mpi-external.sample.yaml $SPACK_ROOT/etc/spack/linux/package-policies/externals/mpi-external.yaml
+$cp_cmd $SPACK_ROOT/etc/spack/linux/package-policies/externals/os-external.sample.yaml $SPACK_ROOT/etc/spack/linux/package-policies/externals/os-external.yaml
 
 $ln_cmd $SPACK_LICENSES_PATH etc/spack/licenses
 $ln_cmd $SPACK_ROOT/site/conf/03-site/mirrors.yaml etc/spack/mirrors.yaml
