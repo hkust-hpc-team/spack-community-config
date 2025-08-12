@@ -65,7 +65,7 @@ function amplitude_track_spack_activate() {
   local max_attempts=3
   local attempt=1
 
-  while (( attempt <= max_attempts )); do
+  while ((attempt <= max_attempts)); do
     response_code=$("${_curl_cmd}" -s -o /dev/null -w "%{http_code}" \
       -X POST https://api2.amplitude.com/2/httpapi \
       -H 'Content-Type: application/json' \
@@ -74,12 +74,9 @@ function amplitude_track_spack_activate() {
     if [ "$response_code" = "200" ]; then
       return 0
     fi
-    echo "Attempt $attempt failed with HTTP $response_code" >&2
-    sleep $((attempt * 2))
+    sleep "0.$((attempt * 2))"
     ((attempt++))
   done
-
-  echo "Error: curl failed after $max_attempts attempts" >&2
   return 1
 }
 
