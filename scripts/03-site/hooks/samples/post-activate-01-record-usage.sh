@@ -65,7 +65,7 @@ function amplitude_track_spack_activate() {
   local max_attempts=3
   local attempt=1
 
-  while [ $attempt -le $max_attempts ]; do
+  while (( attempt <= max_attempts )); do
     response_code=$("${_curl_cmd}" -s -o /dev/null -w "%{http_code}" \
       -X POST https://api2.amplitude.com/2/httpapi \
       -H 'Content-Type: application/json' \
