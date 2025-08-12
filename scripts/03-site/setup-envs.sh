@@ -143,7 +143,7 @@ function _spack_variant_init() {
   export SPACK_ROOT="$_spack_root"
   export SPACK_SYSTEM_CONFIG_PATH="$_spack_system_config_path"
   export SPACK_USER_CONFIG_PATH="$_spack_user_config_path"
-  if [ "$_spack_disable_local_config=" == "1" ]; then
+  if [ "$_spack_disable_local_config" == "1" ]; then
     export SPACK_USER_CACHE_PATH="$SPACK_ROOT/var/spack"
   else
     export SPACK_USER_CACHE_PATH="$_spack_user_cache_path"
@@ -163,6 +163,15 @@ if [ $_spack_variant_init_ret -eq 0 ]; then
   echo "==> Setting up spack [$SPACK_VARIANT] environment" >&2
   export MODULEPATH="$(echo $MODULEPATH | tr ':' '\n' | grep -v 'spack' | tr '\n' ':')"
   module use $SPACK_ROOT/dist/lmod/linux-*/Core || true
+  _pre_activate_hook="$SPACK_ROOT/dist/bin/hooks/pre-activate.sh"
+  if [ ! -f "$_pre_activate_hook" ]; then
+    echo "W=> No pre-activate hook found" >&2
+  elif [ ! -x "$_pre_activate_hook" ]; then
+    echo "W=> Pre-activate hook is not executable" >&2
+  else
+    "$_pre_activate_hook" || echo "E=> Failed to run pre-activate hook" >&2
+  fi
+  unset _pre_activate_hook
   source $SPACK_ROOT/share/spack/setup-env.sh
   if [ ! -d "$SPACK_USER_CACHE_PATH/bootstrap" ]; then
     if [ ! -e "$SPACK_USER_CACHE_PATH/config.yaml" ]; then
@@ -174,6 +183,15 @@ if [ $_spack_variant_init_ret -eq 0 ]; then
     ) >&2
     spack bootstrap now
   fi
+  _post_activate_hook="$SPACK_ROOT/dist/bin/hooks/post-activate.sh"
+  if [ ! -f "$_post_activate_hook" ]; then
+    echo "W=> No post-activate hook found" >&2
+  elif [ ! -x "$_post_activate_hook" ]; then
+    echo "W=> Post-activate hook is not executable" >&2
+  else
+    "$_post_activate_hook" || echo "E=> Failed to run post-activate hook" >&2
+  fi
+  unset _post_activate_hook
   (
     echo "==> Spack [$SPACK_VARIANT] environment is ready"
     echo
