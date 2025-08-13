@@ -1,4 +1,7 @@
 packages:
+  berkeley-db:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
   bzip2:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
@@ -11,7 +14,13 @@ packages:
   gnutls:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libedit:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
   libidn2:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libsigsegv:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   libxml2:
@@ -53,3 +62,5 @@ packages:
   zstd:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+      - build_system=makefile
+      - compression=none
