@@ -1,0 +1,36 @@
+# A new environment for CUDA and cuDNN builds
+spack:
+  concretizer:
+    reuse: false
+    unify: true
+  specs:
+    # Spack will pull in the appropriate cudnn version
+    - cuda@12.7.0 # hpc gpu cuda
+    - cuda@12.4.1
+    - cuda@12.2.2
+    - cuda@11.8.0
+
+    # - py-torch +cuda cuda_arch=80 ^cuda@11.8.0 #A10
+    # - py-torch +cuda cuda_arch=86 ^cuda@12.2.2 #RTX
+    # - py-torch +cuda cuda_arch=90 ^cuda@12.4.1
+    # - magma +cuda
+    # - gromacs +cuda
+  packages:
+    gcc-runtime:
+      require:
+        - "target=x86_64_v4 %gcc@13.2.0.spack"
+
+  modules:
+    default:
+      lmod:
+        all:
+          exclude:
+            - cudnn # Not sure if need as a dependent module, exclude first
+        py-torch:
+          template: '{{package.name}}/{{version}}-{{compiler.name}}' # additional lua scripts if needed
+        cuda:
+          template: '{{package.name}}/{{version}}'
+
+  view: true
+
+  # gcc 13+, gas 13+
