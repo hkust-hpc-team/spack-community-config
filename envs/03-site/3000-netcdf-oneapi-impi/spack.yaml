@@ -14,12 +14,9 @@ spack:
     - ccs:
         - matrix:
             - - "target=x86_64_v4"
-            - # - "%intel@2021.10.0 ^intel-oneapi-runtime@2023%oneapi@2023.2.4"
-              - "%oneapi@2025.0.4 ^intel-oneapi-runtime@2025%oneapi@2025.0.4"
+            - - "%oneapi@2025.0.4 ^intel-oneapi-runtime@2025%oneapi@2025.0.4"
               - "%oneapi@2024.2.1 ^intel-oneapi-runtime@2024%oneapi@2024.2.1"
               - "%oneapi@2023.2.4 ^intel-oneapi-runtime@2023%oneapi@2023.2.4"
-              - "%oneapi@2022.2.1 ^intel-oneapi-runtime@2022%oneapi@2022.2.1"
-              - "%oneapi@2021.4.0 ^intel-oneapi-runtime@2021%oneapi@2021.4.0"
     - mpis:
         - ^intel-oneapi-mpi@2021
   packages:

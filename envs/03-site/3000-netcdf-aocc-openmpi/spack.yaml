@@ -15,10 +15,9 @@ spack:
         - matrix:
             - - "target=zen4"
             - - "%aocc@5.0.0"
-              - "%aocc@4.2.0"
     - mpis:
-        - ^openmpi@4
         - ^openmpi@5
+        - ^openmpi@4
   packages:
     all:
       require:
