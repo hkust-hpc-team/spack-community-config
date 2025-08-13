@@ -53,4 +53,4 @@ packages:
       scalapack: [netlib-scalapack, amdscalapack, intel-oneapi-mkl]
       tbb: [intel-tbb]
       uuid: [libuuid]
-      zlib-api: [zlib-ng+compat, zlib]
+      zlib-api: [zlib, zlib-ng+compat]
