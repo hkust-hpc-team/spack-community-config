@@ -6,9 +6,11 @@ spack:
     unify: false
   definitions:
     - goals:
-        - "netcdf-fortran"
-        - "netcdf-c"
         - "hdf5"
+        - "netcdf-c"
+        - "netcdf-fortran"
+        - "parallel-netcdf"
+        - "parallelio"
     - ccs:
         - matrix:
             - - "target=x86_64_v4"

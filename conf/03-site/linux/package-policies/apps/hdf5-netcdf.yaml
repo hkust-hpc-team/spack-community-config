@@ -9,9 +9,10 @@ packages:
       - +mpi
       - +shared
       - +subfiling
-      - +szip
       - +threadsafe
       - +tools
+    require:
+      - +szip
   netcdf-c:
     prefer:
       - "@4.9:"
@@ -22,11 +23,12 @@ packages:
       - +mpi
       - +nczarr_zip
       - +optimize
-      - +parallel-netcdf
       - +pic
       - +shared
       - +szip
       - +zstd
+    require:
+      - +parallel-netcdf
   parallel-netcdf:
     prefer:
       - "@1.14:"
@@ -35,3 +37,11 @@ packages:
       - +fortran
       - +pic
       - +shared
+  parallelio:
+    prefer:
+      - "@2.6:"
+      - +fortran
+      - +mpi
+      - +pnetcdf
+      - +shared
+      - +ncint
