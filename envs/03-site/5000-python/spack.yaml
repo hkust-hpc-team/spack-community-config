@@ -1,15 +1,6 @@
 spack:
   concretizer:
     unify: false
-  modules:
-    default:
-      lmod:
-        anaconda3:
-          template: modules/anaconda3-modulefile.lua
-  packages:
-    all:
-      require:
-        - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
     - matrix:
         - - python
@@ -18,4 +9,5 @@ spack:
           - "@3.11"
           - "@3.10"
           - "@3.9"
+        - - target=x86_64_v4 %gcc@11.5.0.spack
   view: false

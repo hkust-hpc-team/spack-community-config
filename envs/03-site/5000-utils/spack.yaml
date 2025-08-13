@@ -1,20 +1,19 @@
 spack:
   concretizer:
     unify: false
-  packages:
-    all:
-      require:
-        - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
-    - bash
-    - cvs
-    - emacs +json
-    - git
-    - git-lfs
-    - lua
-    - mercurial
-    - subversion
-    - tcl
-    - texlive
-    - zsh
+    - matrix:
+        - - bash
+          - cmake
+          - cvs
+          - emacs +json
+          - git
+          - git-lfs
+          - lua
+          - mercurial
+          - subversion
+          - tcl
+          - texlive
+          - zsh
+        - - target=x86_64_v4 %gcc@11.5.0.spack
   view: false
