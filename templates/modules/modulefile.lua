@@ -99,7 +99,8 @@ append_path("MANPATH", "", ":")
 {% block footer %}
 {# In case the module needs to be extended with custom Lua code #}
 
--- export 
+-- export SPACK_LMOD_LOAD_HOOK_SCRIPT=/raid/spack-test/site/scripts/03-site/hooks/samples/post-module-load.sh 
+
 -- Set SPACK_LMOD_LOAD_HOOK_SCRIPT to an executable that accepts:
 --   $1 = module full name (myModuleFullName())
 --   $2 = module version    (myModuleVersion())

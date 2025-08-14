@@ -35,15 +35,12 @@ if [ -z "${mod_version}" ]; then
 fi
 
 # Best-effort architecture extraction from the long version string.
-# Recognize common targets like x86_64_vN, aarch64, ppc64le.
+# Expect long form: <version>-<arch?>-<hash>, so grab the token after the first '-'.
+arch_token="$(printf '%s' "${mod_version_long}" | awk -F- '{print $2}')"
 mod_arch=""
-case "${mod_version_long}" in
-  *-x86_64_v[0-9]-*|*-x86_64_v[0-9][0-9]-*) mod_arch="$(printf '%s' "${mod_version_long}" | sed -E 's|.*-((x86_64_v[0-9]+))-.*|\1|')" ;;
-  *-x86_64-*) mod_arch="x86_64" ;;
-  *-aarch64-*) mod_arch="aarch64" ;;
-  *-arm64-*) mod_arch="arm64" ;;
-  *-ppc64le-*) mod_arch="ppc64le" ;;
-  *-powerpc64le-*) mod_arch="powerpc64le" ;;
+case "${arch_token}" in
+  x86_64|x86_64_v[0-9]*) mod_arch="${arch_token}" ;;
+  aarch64|arm64|ppc64le|powerpc64le) mod_arch="${arch_token}" ;;
   *) mod_arch="" ;;
 esac
 
