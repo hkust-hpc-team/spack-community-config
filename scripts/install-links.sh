@@ -64,7 +64,11 @@ echo "Installation summary:"
 echo "  Package detection:"
 echo "    Python: $python3_cmd"
 echo "    Git: $git_cmd"
-echo "    PDM: $pdm_cmd"
+if [[ "$ENABLE_DEVELOPMENT" == "1" ]]; then
+  echo "    PDM: $pdm_cmd"
+else
+  echo "    PDM: Not required"
+fi
 echo "  Configs:"
 echo "   SPACK_ROOT: $SPACK_ROOT"
 echo "   SPACK_LICENSES_PATH: $SPACK_LICENSES_PATH"
@@ -88,15 +92,15 @@ echo "==> Spack branch: $_spack_branch"
 $git_cmd -C site submodule update --init --recursive --force --remote
 
 if [ "$ENABLE_DEVELOPMENT" == "1" ]; then
-  pdm venv create -f $python3_cmd
-  pdm lock -d -G dev --python ">=3.9,<=3.13" --platform linux --implementation cpython
-  pdm sync -d -G dev
+  $pdm_cmd venv create -f $python3_cmd
+  $pdm_cmd lock -d -G dev --python ">=3.9,<=3.13" --platform linux --implementation cpython
+  $pdm_cmd sync -d -G dev
 
   (
     pushd site
-    pdm venv create -f $python3_cmd
-    pdm lock -d -G dev --python ">=3.9,<=3.13" --platform linux --implementation cpython
-    pdm sync -d -G dev
+    $pdm_cmd venv create -f $python3_cmd
+    $pdm_cmd lock -d -G dev --python ">=3.9,<=3.13" --platform linux --implementation cpython
+    $pdm_cmd sync -d -G dev
     popd
   )
 fi
