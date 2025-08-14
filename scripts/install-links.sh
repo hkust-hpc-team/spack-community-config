@@ -64,7 +64,7 @@ echo "Installation summary:"
 echo "  Package detection:"
 echo "    Python: $python3_cmd"
 echo "    Git: $git_cmd"
-if [ "$ENABLE_DEVELOPMENT" == "1" ]; then
+if [[ "$ENABLE_DEVELOPMENT" == "1" ]]; then
   echo "    PDM: $pdm_cmd"
 else
   echo "    PDM: Not required"
