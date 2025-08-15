@@ -11,8 +11,11 @@ spack:
         matlab:
           template: modules/matlab-modulefile.lua
   specs:
-    - matlab@R2024a
-    - matlab@R2023b
-    - matlab@R2022b
-    - matlab@R2019b
+    - matrix:
+        - - "matlab"
+        - - "@R2024a"
+          - "@R2023b"
+          - "@R2022b"
+          - "@R2019b"
+        - - target=x86_64_v4 %gcc@11.5.0.spack
   view: false

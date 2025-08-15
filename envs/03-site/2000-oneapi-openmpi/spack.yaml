@@ -4,16 +4,6 @@ spack:
       granularity: microarchitectures
       host_compatible: false
     unify: false
-  packages:
-    all:
-      require:
-        - one_of:
-            - "target=x86_64_v4 %oneapi@:"
-            - "target=x86_64_v4 %intel@:"
-            - "target=x86_64_v4 %gcc@11.5.0.spack"
-    gcc-runtime:
-      require:
-        - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
     - matrix:
         - - openmpi

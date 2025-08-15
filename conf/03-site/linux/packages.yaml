@@ -54,3 +54,12 @@ packages:
       tbb: [intel-tbb]
       uuid: [libuuid]
       zlib-api: [zlib, zlib-ng+compat]
+    require:
+      - one_of:
+          - "target=sapphirerapids %oneapi@:"
+          - "target=x86_64_v4 %oneapi@:"
+          - "target=x86_64_v4 %intel@:"
+          - "target=x86_64_v4 %gcc@11.5.0.spack"
+          - "target=sapphirerapids %gcc@:"
+          - "target=zen4 %gcc@:"
+          - "target=zen4 %aocc@:"
