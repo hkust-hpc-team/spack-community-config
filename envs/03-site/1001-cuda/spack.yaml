@@ -1,0 +1,29 @@
+spack:
+  concretizer:
+    reuse: false
+    unify: false
+  packages:
+    all:
+      require:
+        - "target=x86_64_v4 %gcc@11.5.0.spack"
+  specs:
+    - matrix:
+        - - cuda
+        - - "@12.8.0"
+          - "@12.6.3"
+          - "@12.5.1"
+          - "@12.4.1"
+          - "@12.3.2"
+          - "@12.2.2"
+          - "@11.8.0"
+    - matrix:
+        - - cudnn
+        - - "@9.2.0.82-12"
+          - "@8.9.7.29-12"
+        - - "^cuda@12"
+    - matrix:
+        - - cudnn
+        - - "@9.2.0.82-11"
+          - "@8.9.7.29-11"
+        - - "^cuda@11"
+  view: false
