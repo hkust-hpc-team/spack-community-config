@@ -9,7 +9,7 @@
 #   SPACK_AMPLITUDE_HTTPAPI_URL  (optional, default: https://api2.amplitude.com/2/httpapi)
 
 set -u
-
+echo "Script hooked"
 curl_bin="$(command -v curl || true)"
 if [ -z "${curl_bin}" ]; then
   exit 0
