@@ -7,9 +7,9 @@ fi
 set -euo pipefail
 
 # TODO: Modify these variables to your needs
-declare ENABLE_DEVELOPMENT="1"
-# declare SPACK_LICENSES_PATH=""
-# declare SPACK_SOURCE_CACHE_PATH=""
+declare ENABLE_DEVELOPMENT=${ENABLE_DEVELOPMENT:-"0"}
+declare SPACK_LICENSES_PATH=${SPACK_LICENSES_PATH:-"/opt/shared/licenses"}
+declare SPACK_SOURCE_CACHE_PATH=${SPACK_SOURCE_CACHE_PATH:-"/opt/shared/installers"}
 
 if [ "$USER" == "root" ]; then
   echo "E: Do not run this script as root"
@@ -25,6 +25,7 @@ fi
 declare git_cmd="$(which git)"
 declare ls_cmd="ls -l --color=always"
 declare ln_cmd="ln -sfn"
+declare cp_cmd="cp -f"
 declare mkdir_cmd="mkdir -p"
 
 if [ -z "$python3_cmd" ]; then
@@ -60,11 +61,15 @@ export SPACK_LICENSES_PATH="${SPACK_LICENSES_PATH:-$SPACK_ROOT/opt/licenses}"
 export SPACK_SOURCE_CACHE_PATH="${SPACK_SOURCE_CACHE_PATH:-$SPACK_ROOT/opt/installers}"
 
 echo
-echo "Installation summary:"
+echo "Installation summary: (You can change them in $SPACK_ROOT/site/scripts/install-links.sh)"
 echo "  Package detection:"
 echo "    Python: $python3_cmd"
 echo "    Git: $git_cmd"
-echo "    PDM: $pdm_cmd"
+if [[ "$ENABLE_DEVELOPMENT" == "1" ]]; then
+  echo "    PDM: $pdm_cmd"
+else
+  echo "    PDM: Not required"
+fi
 echo "  Configs:"
 echo "   SPACK_ROOT: $SPACK_ROOT"
 echo "   SPACK_LICENSES_PATH: $SPACK_LICENSES_PATH"
@@ -82,21 +87,21 @@ echo "==> Starting installation"
 pushd $SPACK_ROOT
 
 declare _spack_branch="$(git rev-parse --abbrev-ref HEAD)"
-echo $_spack_branch >$SPACK_ROOT/.spack-config.variant.log
+echo "$_spack_branch" >"$SPACK_ROOT/.spack-config.variant.log"
 echo "==> Spack branch: $_spack_branch"
 
 $git_cmd -C site submodule update --init --recursive --force --remote
 
 if [ "$ENABLE_DEVELOPMENT" == "1" ]; then
-  pdm venv create -f $python3_cmd
-  pdm lock -d -G dev --python ">=3.9,<=3.13" --platform linux --implementation cpython
-  pdm sync -d -G dev
+  $pdm_cmd venv create -f $python3_cmd
+  $pdm_cmd lock -d -G dev --python ">=3.9,<=3.13" --platform linux --implementation cpython
+  $pdm_cmd sync -d -G dev
 
   (
     pushd site
-    pdm venv create -f $python3_cmd
-    pdm lock -d -G dev --python ">=3.9,<=3.13" --platform linux --implementation cpython
-    pdm sync -d -G dev
+    $pdm_cmd venv create -f $python3_cmd
+    $pdm_cmd lock -d -G dev --python ">=3.9,<=3.13" --platform linux --implementation cpython
+    $pdm_cmd sync -d -G dev
     popd
   )
 fi
@@ -128,6 +133,15 @@ $ln_cmd $SPACK_LICENSES_PATH etc/spack/licenses
 $ln_cmd $SPACK_ROOT/site/conf/03-site/mirrors.yaml etc/spack/mirrors.yaml
 $ln_cmd $SPACK_ROOT/site/conf/03-site/modules.yaml etc/spack/modules.yaml
 $ln_cmd $SPACK_ROOT/site/conf/03-site/repos.yaml etc/spack/repos.yaml
+
+for policy in gui-external mpi-external os-external; do
+  $cp_cmd "$SPACK_ROOT/etc/spack/linux/package-policies/externals/${policy}.sample.yaml" "$SPACK_ROOT/etc/spack/linux/package-policies/externals/${policy}.yaml"
+done
+
+for key in matlab; do
+  $cp_cmd "$SPACK_ROOT/etc/spack/linux/package-keys/${key}.sample.yaml" "$SPACK_ROOT/etc/spack/linux/package-keys/${key}.yaml"
+done
+
 echo "==> Configured directory: etc/spack"
 $ls_cmd etc/spack
 
