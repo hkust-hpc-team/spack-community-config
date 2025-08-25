@@ -6,7 +6,6 @@ modules:
     lmod:
       all:
         autoload: run
-        template: 'track-load.lua'
       core_compilers:
         - gcc@11.5.0.spack
       hide_implicits: true
