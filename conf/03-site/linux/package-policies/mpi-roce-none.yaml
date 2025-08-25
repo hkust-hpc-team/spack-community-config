@@ -7,7 +7,6 @@ packages:
           - "target=x86_64_v4 +generic-names %gcc@:"
           - "target=zen3 %aocc@:"
           - "%oneapi@:"
-          - "%intel@:"
   libfabric:
     conflict:
       - "%gcc@11.5.0.spack"
