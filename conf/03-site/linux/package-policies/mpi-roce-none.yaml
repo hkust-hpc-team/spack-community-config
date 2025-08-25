@@ -34,15 +34,6 @@ packages:
       - +wrapper-rpath
       - spec: +legacylaunchers
         when: "@:4 schedulers=slurm"
-  pmix:
-    conflict:
-      - "%gcc@11.5.0.spack"
-    prefer:
-      - "@5"
-    require:
-      - ~munge
-      - spec: +pmi_backwards_compatibility
-        when: "@:3"
   ucx:
     conflict:
       - "%gcc@11.5.0.spack"
