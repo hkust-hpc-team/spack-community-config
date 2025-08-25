@@ -2,6 +2,9 @@ packages:
   berkeley-db:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+  brotli:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
   bzip2:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
@@ -11,8 +14,19 @@ packages:
   gdbm:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gmp:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
   gnutls:
     require:
+      - "@3.8.9:"
+      - +zlib
+      - +zstd
+      - +brotli
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  krb5:
+    require:
+      - +shared
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   libedit:
     require:
@@ -23,10 +37,22 @@ packages:
   libsigsegv:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libunistring:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
   libxml2:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+  lzma:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  mbedtls:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
   ncurses:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  nettle:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   nghttp2:
