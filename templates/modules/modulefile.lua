@@ -109,7 +109,15 @@ if ok and m == "load" then
       return "'" .. s .. "'"
     end
     local cmd = sh_quote(script) .. " " .. sh_quote(myModuleFullName()) .. " " .. sh_quote(myModuleVersion())
-    pcall(function() os.execute(cmd .. " >/dev/null 2>&1 &") end)
+    local debug = os.getenv("SPACK_HOOK_DEBUG")
+    local suffix
+    if debug and #debug > 0 then
+      -- keep backgrounding but don’t silence output
+      suffix = " &"
+    else
+      suffix = " >/dev/null 2>&1 &"
+    end
+    pcall(function() os.execute(cmd .. suffix) end)
   end
 end
 {% endblock %}

@@ -98,7 +98,7 @@ analytics_lmod_send_version() {
 
   [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Parsed module: name='${mod_name}', version='${mod_ver}', architecture='${mod_arch}', hash='${mod_hash}'" >&2
 
-  amplitude_lmod_send_event "${mod_name}" "${mod_ver}" "${mod_version_long}" "${mod_arch}"
+  amplitude_lmod_send_event "${mod_name}" "${mod_ver}" "$2" "${mod_arch}"
 }
 
 amplitude_lmod_prepare_event() {
@@ -118,6 +118,12 @@ amplitude_lmod_prepare_event() {
   local device_id="${username}@${cluster_id}/${session_date}"
   local user_id="${username}@${cluster_id}"
 
+  local _amplitude_spack_variant="${SPACK_VARIANT:-unknown}"
+  local _amplitude_spack_disable_local_config="${SPACK_DISABLE_LOCAL_CONFIG:-0}"
+  local _amplitude_spack_root="${SPACK_ROOT:-unknown}"
+  local _amplitude_spack_user_cache_path="${SPACK_USER_CACHE_PATH:-unknown}"
+  local _amplitude_spack_user_config_path="${SPACK_USER_CONFIG_PATH:-unknown}"
+
   # Build JSON payload (single event)
   local json_data=$(printf '{
   "api_key": "%s",
@@ -131,7 +137,13 @@ amplitude_lmod_prepare_event() {
       "hostname": "%s",
       "module_name": "%s",
       "module_version": "%s",
-      "module_version_long": "%s"%s
+      "module_version_long": "%s",
+      "spack_variant": "%s",
+      "spack_disable_local_config": "%s",
+      "spack_root": "%s",
+      "spack_user_cache_path": "%s",
+      "spack_user_config_path": "%s"
+      %s
     },
     "user_properties": {
       "cluster": "%s",
@@ -149,6 +161,12 @@ amplitude_lmod_prepare_event() {
     "${mod_version}" \
     "${mod_version_long}" \
     "$([ -n "${mod_arch}" ] && printf ', "module_architecture": "%s"' "${mod_arch}" || printf '')" \
+    "${_amplitude_spack_variant}" \
+    "${_amplitude_spack_disable_local_config}" \
+    "${_amplitude_spack_root}" \
+    "${_amplitude_spack_user_cache_path}" \
+    "${_amplitude_spack_user_config_path}" \
+    "${_amplitude_slurm_props}" \
     "${cluster_id}" \
     "${username}")
   [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Prepared Amplitude event JSON: ${json_data}" >&2
