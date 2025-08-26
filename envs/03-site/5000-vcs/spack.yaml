@@ -6,10 +6,9 @@ spack:
       require:
         - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
-    - bash
-    - emacs +json
-    - lua
-    - ocaml
-    - tcl
-    - zsh
+    - cvs
+    - git
+    - git-lfs
+    - mercurial
+    - subversion
   view: false
