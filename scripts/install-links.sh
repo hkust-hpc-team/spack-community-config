@@ -25,8 +25,18 @@ fi
 declare git_cmd="$(which git)"
 declare ls_cmd="ls -l --color=always"
 declare ln_cmd="ln -sfn"
-declare cp_cmd="cp -f"
+declare cp_cmd="cp"
 declare mkdir_cmd="mkdir -p"
+
+check_and_copy() {
+  local from="$1"
+  local to="$2"
+  if [ -e "$to" ]; then
+    echo "I: $to already exists"
+  else
+    $cp_cmd "$from" "$to"
+  fi
+}
 
 if [ -z "$python3_cmd" ]; then
   echo "E: Python >=3.9,<=3.13 not found"
@@ -135,11 +145,11 @@ $ln_cmd $SPACK_ROOT/site/conf/03-site/modules.yaml etc/spack/modules.yaml
 $ln_cmd $SPACK_ROOT/site/conf/03-site/repos.yaml etc/spack/repos.yaml
 
 for policy in gui-external mpi-external os-external; do
-  $cp_cmd "$SPACK_ROOT/etc/spack/linux/package-policies/externals/${policy}.sample.yaml" "$SPACK_ROOT/etc/spack/linux/package-policies/externals/${policy}.yaml"
+  check_and_copy "$SPACK_ROOT/etc/spack/linux/package-policies/externals/${policy}.sample.yaml" "$SPACK_ROOT/etc/spack/linux/package-policies/externals/${policy}.yaml"
 done
 
 for key in matlab; do
-  $cp_cmd "$SPACK_ROOT/etc/spack/linux/package-keys/${key}.sample.yaml" "$SPACK_ROOT/etc/spack/linux/package-keys/${key}.yaml"
+  check_and_copy "$SPACK_ROOT/etc/spack/linux/package-keys/${key}.sample.yaml" "$SPACK_ROOT/etc/spack/linux/package-keys/${key}.yaml"
 done
 
 echo "==> Configured directory: etc/spack"
