@@ -16,5 +16,6 @@ include:
   - path: package-policies/apps/boost.yaml
   - path: package-policies/apps/cuda.yaml
   - path: package-policies/apps/hdf5-netcdf.yaml
+  - path: package-policies/apps/perl.yaml
   - path: package-policies/apps/r.yaml
   - path: package-keys/matlab.yaml
