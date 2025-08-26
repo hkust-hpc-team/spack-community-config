@@ -100,7 +100,8 @@ append_path("MANPATH", "", ":")
 -- This code will be added to every module file, before the footer.
 local ok, m = pcall(mode)
 if ok and m == "load" then
-  local script = os.getenv("SPACK_LMOD_LOAD_HOOK_SCRIPT")
+  local spack_root = os.getenv("SPACK_ROOT")
+  local script = spack_root .. "/dist/hooks/samples/post-module-load.sh"
   if script and #script > 0 then
     local function sh_quote(s)
       s = s or ""
@@ -108,15 +109,7 @@ if ok and m == "load" then
       return "'" .. s .. "'"
     end
     local cmd = sh_quote(script) .. " " .. sh_quote(myModuleFullName()) .. " " .. sh_quote(myModuleVersion())
-    local debug = os.getenv("SPACK_HOOK_DEBUG")
-    local suffix
-    if debug and #debug > 0 then
-      -- keep backgrounding but don’t silence output
-      suffix = " &"
-    else
-      suffix = " >/dev/null 2>&1 &"
-    end
-    pcall(function() os.execute(cmd .. suffix) end)
+    pcall(function() os.execute(cmd .. " >/dev/null 2>&1 &") end)
   end
 end
 {% endblock %}
