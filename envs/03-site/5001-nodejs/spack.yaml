@@ -1,11 +1,6 @@
 spack:
   concretizer:
     unify: false
-  modules:
-    default:
-      lmod:
-        anaconda3:
-          template: modules/anaconda3-modulefile.lua
   packages:
     all:
       require:
