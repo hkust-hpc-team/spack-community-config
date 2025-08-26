@@ -32,7 +32,7 @@ check_and_copy() {
   local from="$1"
   local to="$2"
   if [ -e "$to" ]; then
-    echo "I: $to already exists"
+    echo "W: $to already exists, will not overwrite"
   else
     $cp_cmd "$from" "$to"
   fi
