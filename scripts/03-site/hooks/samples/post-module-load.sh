@@ -75,17 +75,18 @@ analytics_lmod_send_version() {
   fi
 
   # check hash format and assign mod_hash
-  if [[ "${mod_ver_arr[-1]}" =~ ^[a-z0-9]{7}$ ]]; then
-    mod_hash="${mod_ver_arr[-1]}"
+  local last_idx=$((${#mod_ver_arr[@]} - 1))
+  if [[ "${mod_ver_arr[last_idx]}" =~ ^[a-z0-9]{7}$ ]]; then
+    mod_hash="${mod_ver_arr[last_idx]}"
   else
     [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: invalid module hash format" >&2
     return 1
   fi
 
-  # check if second last token is architecture, mod_ver should exclude architecture
-  if version_is_architecture "${mod_ver_arr[-2]}"; then
-    [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Detected module architecture: ${mod_ver_arr[-2]}" >&2
-    mod_arch="${mod_ver_arr[-2]}"
+  local second_last_idx=$((${#mod_ver_arr[@]} - 2))
+  if version_is_architecture "${mod_ver_arr[second_last_idx]}"; then
+    [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Detected module architecture: ${mod_ver_arr[second_last_idx]}" >&2
+    mod_arch="${mod_ver_arr[second_last_idx]}"
     if [ "${#mod_ver_arr[@]}" -lt 3 ]; then
       [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: invalid module version format" >&2
       return 1
@@ -193,4 +194,4 @@ amplitude_lmod_send_event() {
   done
 }
 
-analytics_lmod_send_version "${mod_fullname}" "${mod_version_long}"
+analytics_lmod_send_version "$1" "$2"
