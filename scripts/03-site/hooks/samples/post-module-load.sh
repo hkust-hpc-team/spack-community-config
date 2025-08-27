@@ -143,20 +143,15 @@ amplitude_lmod_prepare_event() {
   local _amplitude_spack_user_cache_path="${SPACK_USER_CACHE_PATH:-unknown}"
   local _amplitude_spack_user_config_path="${SPACK_USER_CONFIG_PATH:-unknown}"
 
-  # Optional extra event properties (arch and selected SLURM vars)
+  # Optional extra event properties
   local extra_props=""
-  if [ -n "${mod_arch}" ]; then
-    extra_props+=$(printf ', "module_architecture": "%s"' "$(json_escape "${mod_arch}")")
-  fi
-  if [ -n "${SLURM_JOB_ID:-}" ]; then
-    extra_props+=$(printf ', "slurm_job_id": "%s"' "$(json_escape "${SLURM_JOB_ID}")")
-  fi
-  if [ -n "${SLURM_JOB_USER:-}" ]; then
-    extra_props+=$(printf ', "slurm_job_user": "%s"' "$(json_escape "${SLURM_JOB_USER}")")
-  fi
-  if [ -n "${SLURM_JOB_NAME:-}" ]; then
-    extra_props+=$(printf ', "slurm_job_name": "%s"' "$(json_escape "${SLURM_JOB_NAME}")")
-  fi
+  add_json_prop() {
+    if [ -n "$2" ]; then
+      extra_props+=$(printf ', "%s": "%s"' "$1" "$(json_escape "$2")")
+    fi
+  }
+  add_json_prop "module_architecture" "${mod_arch}"
+  unset -f add_json_prop
 
   # Build JSON payload (single event)
   local json_data
