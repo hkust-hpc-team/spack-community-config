@@ -10,26 +10,33 @@
 
 set -euo pipefail
 
-[ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Script hooked: $1 ($2)" >&2
+[ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Script hooked: ${1:-} (${2:-})" >&2
 
 declare api_key="${SPACK_AMPLITUDE_API_KEY:-}"
 declare cluster_id="${SPACK_AMPLITUDE_CLUSTER_ID:-}"
 declare httpapi_url="${SPACK_AMPLITUDE_HTTPAPI_URL:-https://api2.amplitude.com/2/httpapi}"
 
-if [ -z "${api_key}" ] || [ -z "${cluster_id}" ]; then
-  [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: missing configuration" >&2
-  exit 1
-fi
-
+# If missing config or curl, do not interfere with module loading; just exit 0.
 curl_bin="$(command -v curl || true)"
-if [ -z "${curl_bin}" ]; then
-  exit 1
+if [ -z "${api_key}" ] || [ -z "${cluster_id}" ] || [ -z "${curl_bin}" ]; then
+  [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: missing configuration or curl" >&2
+  exit 0
 fi
 
 if [ -z "${1:-}" ] || [ -z "${2:-}" ]; then
   [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: missing module arguments" >&2
-  exit 1
+  exit 0
 fi
+
+# JSON escape helper: escape backslashes, quotes, and newlines
+json_escape() {
+  local s=${1-}
+  s=${s//\\/\\\\}
+  s=${s//\"/\\\"}
+  s=${s//$'\n'/\\n}
+  s=${s//$'\r'/}
+  echo -n "$s"
+}
 
 version_is_architecture() {
   local ver="${1:-}"
@@ -55,47 +62,58 @@ version_is_architecture() {
   sparc | sparc64) return 0 ;;
   # RISC-V march
   riscv64 | u74mc) return 0 ;;
-  *)
-    return 1
-    ;;
+  *) return 1 ;;
   esac
 }
 
+# Join array elements by delimiter
+join_by() { local d="$1"; shift; local first=1; for x in "$@"; do if (( first )); then printf "%s" "$x"; first=0; else printf "%s%s" "$d" "$x"; fi; done; }
+
 analytics_lmod_send_version() {
   local mod_name="${1%%/*}"
-  local -r mod_ver_arr=("${2//-/ }")
-  local mod_ver=""  # everything except last (and second last if architecture)
-  local mod_arch="" # optional, second last token if matches known architecture
-  local mod_hash="" # last, 7 characters [a-z0-9]
+
+  # Split long version into tokens on '-'
+  local -a mod_ver_arr=()
+  IFS=' ' read -r -a mod_ver_arr <<< "${2//-/ }"
+
+  local mod_ver=""   # everything except last (and second last if architecture)
+  local mod_arch=""  # optional, second last token if matches known architecture
+  local mod_hash=""  # last, 7 characters [a-z0-9]
 
   # must have at least version and hash
   if [ "${#mod_ver_arr[@]}" -lt 2 ]; then
     [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: invalid module version format" >&2
-    return 1
+    return 0
   fi
 
   # check hash format and assign mod_hash
-  local last_idx=$((${#mod_ver_arr[@]} - 1))
+  local last_idx=$(( ${#mod_ver_arr[@]} - 1 ))
   if [[ "${mod_ver_arr[last_idx]}" =~ ^[a-z0-9]{7}$ ]]; then
     mod_hash="${mod_ver_arr[last_idx]}"
   else
     [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: invalid module hash format" >&2
-    return 1
+    return 0
   fi
 
-  local second_last_idx=$((${#mod_ver_arr[@]} - 2))
+  local second_last_idx=$(( ${#mod_ver_arr[@]} - 2 ))
+  local end_idx=$second_last_idx
   if version_is_architecture "${mod_ver_arr[second_last_idx]}"; then
     [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Detected module architecture: ${mod_ver_arr[second_last_idx]}" >&2
     mod_arch="${mod_ver_arr[second_last_idx]}"
     if [ "${#mod_ver_arr[@]}" -lt 3 ]; then
       [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: invalid module version format" >&2
-      return 1
+      return 0
     fi
-    mod_ver="${mod_ver_arr[*]:0:$((${#mod_ver_arr[@]} - 2))}"
-  else
-    mod_ver="${mod_ver_arr[*]:0:$((${#mod_ver_arr[@]} - 1))}"
+    end_idx=$(( second_last_idx ))
   fi
-  mod_ver="${mod_ver// /-}"
+
+  # Build version by joining tokens [0 .. end_idx-1]
+  if (( end_idx > 0 )); then
+    local -a ver_elems=( "${mod_ver_arr[@]:0:${end_idx}}" )
+    mod_ver="$(join_by '-' "${ver_elems[@]}")"
+  else
+    mod_ver="${mod_ver_arr[0]}"
+  fi
 
   [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Parsed module: name='${mod_name}', version='${mod_ver}', architecture='${mod_arch}', hash='${mod_hash}'" >&2
 
@@ -125,8 +143,24 @@ amplitude_lmod_prepare_event() {
   local _amplitude_spack_user_cache_path="${SPACK_USER_CACHE_PATH:-unknown}"
   local _amplitude_spack_user_config_path="${SPACK_USER_CONFIG_PATH:-unknown}"
 
+  # Optional extra event properties (arch and selected SLURM vars)
+  local extra_props=""
+  if [ -n "${mod_arch}" ]; then
+    extra_props+=$(printf ', "module_architecture": "%s"' "$(json_escape "${mod_arch}")")
+  fi
+  if [ -n "${SLURM_JOB_ID:-}" ]; then
+    extra_props+=$(printf ', "slurm_job_id": "%s"' "$(json_escape "${SLURM_JOB_ID}")")
+  fi
+  if [ -n "${SLURM_JOB_USER:-}" ]; then
+    extra_props+=$(printf ', "slurm_job_user": "%s"' "$(json_escape "${SLURM_JOB_USER}")")
+  fi
+  if [ -n "${SLURM_JOB_NAME:-}" ]; then
+    extra_props+=$(printf ', "slurm_job_name": "%s"' "$(json_escape "${SLURM_JOB_NAME}")")
+  fi
+
   # Build JSON payload (single event)
-  local json_data=$(printf '{
+  local json_data
+  json_data=$(printf '{
   "api_key": "%s",
   "events": [{
     "device_id": "%s",
@@ -143,8 +177,7 @@ amplitude_lmod_prepare_event() {
       "spack_disable_local_config": "%s",
       "spack_root": "%s",
       "spack_user_cache_path": "%s",
-      "spack_user_config_path": "%s"
-      %s
+      "spack_user_config_path": "%s"%s
     },
     "user_properties": {
       "cluster": "%s",
@@ -152,46 +185,55 @@ amplitude_lmod_prepare_event() {
     }
   }]
 }' \
-    "${api_key}" \
-    "${device_id}" \
-    "${user_id}" \
-    "${cluster_id}" \
-    "${username}" \
-    "${hostname_fqdn}" \
-    "${mod_name}" \
-    "${mod_version}" \
-    "${mod_version_long}" \
-    "$([ -n "${mod_arch}" ] && printf ', "module_architecture": "%s"' "${mod_arch}" || printf '')" \
-    "${_amplitude_spack_variant}" \
-    "${_amplitude_spack_disable_local_config}" \
-    "${_amplitude_spack_root}" \
-    "${_amplitude_spack_user_cache_path}" \
-    "${_amplitude_spack_user_config_path}" \
-    "${_amplitude_slurm_props}" \
-    "${cluster_id}" \
-    "${username}")
+    "$(json_escape "${api_key}")" \
+    "$(json_escape "${device_id}")" \
+    "$(json_escape "${user_id}")" \
+    "$(json_escape "${cluster_id}")" \
+    "$(json_escape "${username}")" \
+    "$(json_escape "${hostname_fqdn}")" \
+    "$(json_escape "${mod_name}")" \
+    "$(json_escape "${mod_version}")" \
+    "$(json_escape "${mod_version_long}")" \
+    "$(json_escape "${_amplitude_spack_variant}")" \
+    "$(json_escape "${_amplitude_spack_disable_local_config}")" \
+    "$(json_escape "${_amplitude_spack_root}")" \
+    "$(json_escape "${_amplitude_spack_user_cache_path}")" \
+    "$(json_escape "${_amplitude_spack_user_config_path}")" \
+    "${extra_props}" \
+    "$(json_escape "${cluster_id}")" \
+    "$(json_escape "${username}")")
   [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Prepared Amplitude event JSON: ${json_data}" >&2
   echo "${json_data}"
 }
 
 amplitude_lmod_send_event() {
-  local json_data="$(amplitude_lmod_prepare_event $@)"
+  local json_data
+  json_data="$(amplitude_lmod_prepare_event "$@" || true)"
+  if [ -z "${json_data}" ]; then
+    return 0
+  fi
 
-  max_attempts=3
-  attempt=1
-  while ((attempt <= max_attempts)); do
-    response_code=$("${curl_bin}" -s -o /dev/null -w "%{http_code}" \
+  local max_attempts=3
+  local attempt=1
+  while (( attempt <= max_attempts )); do
+    # Small timeouts to avoid blocking module loads
+    local response_code
+    response_code=$("${curl_bin}" -sS -o /dev/null -w "%{http_code}" \
+      --connect-timeout 1 --max-time 2 \
+      -A "spack-module-hook/1.0" \
       -X POST "${httpapi_url}" \
       -H 'Content-Type: application/json' \
       -H 'Accept: */*' \
-      --data "${json_data}")
-    if [ "${response_code}" = "200" ]; then
+      --data-binary "${json_data}" || echo "000")
+    if [[ "${response_code}" =~ ^20[0-9]$ ]]; then
       return 0
     fi
-    [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Attempt ${attempt} failed with HTTP status ${response_code}, retrying..." >&2
+    [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Amplitude post attempt ${attempt} failed (HTTP ${response_code}), retrying..." >&2
     sleep "0.$((attempt * 2))"
-    attempt=$((attempt + 1))
+    attempt=$(( attempt + 1 ))
   done
+  # Never fail the module load due to analytics
+  return 0
 }
 
 analytics_lmod_send_version "$1" "$2"
