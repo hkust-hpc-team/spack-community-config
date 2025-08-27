@@ -24,6 +24,8 @@ packages:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   curl:
     require:
+      - +libidn2
+      - +libssh2
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   cvs:
     require:
@@ -80,6 +82,7 @@ packages:
   ninja:
     require:
       - +re2c
+      - ^python@3.11
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   npm:
     require:
