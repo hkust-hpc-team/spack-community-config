@@ -14,15 +14,18 @@ modules:
         - compiler
       intel-oneapi-mpi:
         environment:
-          'set:':
+          "set:":
             I_MPI_FABRICS: "shm:ofi"
       projections:
-        all: "{name}/{version}-{target.name}"
-        aocc: "{name}/{version}"
-        gcc: "{name}/{version}"
-        intel-oneapi-compilers: "{name}/{version}"
-        intel-oneapi-compilers-classic: "{name}/{version}"
-        intel-oneapi-mpi: "{name}/{version}"
+        all: "{name}/{version}"
+        hdf5: "{name}/{version}-{target.name}"
+        intel-oneapi-mpi: "{name}/{version}-{target.name}"
+        mpich: "{name}/{version}-{target.name}"
+        netcdf-c: "{name}/{version}-{target.name}"
+        netcdf-fortran: "{name}/{version}-{target.name}"
+        openmpi: "{name}/{version}-{target.name}"
+        parallel-netcdf: "{name}/{version}-{target.name}"
+        parallelio: "{name}/{version}-{target.name}"
   prefix_inspections:
     ./:
       - CMAKE_PREFIX_PATH
