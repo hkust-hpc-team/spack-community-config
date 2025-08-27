@@ -6,10 +6,8 @@
 
 set -euo pipefail
 
-#* Fill in these variables for your site
-declare _amplitude_api_key=""
-declare _amplitude_cluster_id=""
-declare _amplitude_httpapi_url="https://api2.amplitude.com/2/httpapi"
+# Source centralized config and helpers (do not export secrets to user env)
+source "$SPACK_ROOT/dist/bin/hooks/env.sh"
 
 [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Script hooked: ${1:-} (${2:-})" >&2
 

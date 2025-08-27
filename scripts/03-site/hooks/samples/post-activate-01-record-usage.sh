@@ -1,7 +1,7 @@
 #!/bin/bash
 
-_amplitude_api_key=""
-_amplitude_cluster_id=""
+# Source centralized config and helpers (do not export secrets to user env)
+source "$SPACK_ROOT/dist/bin/hooks/env.sh"
 
 function amplitude_track_spack_activate() {
   local _curl_cmd="$(command -v curl)"
