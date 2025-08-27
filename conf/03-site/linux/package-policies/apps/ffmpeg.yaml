@@ -1,0 +1,37 @@
+packages:
+  ffmpeg:
+    prefer:
+      - +bzlib
+      - +doc
+      - +drawtext
+      - +gpl
+      - +libmp3lame
+      - +libopenjpeg
+      - +libopus
+      - +libspeex
+      - +libvorbis
+      - +libvpx
+      - +libx264
+      - +libxml2
+      - +nonfree
+      - +openssl
+      - +shared
+      - +version3
+      - spec: +X
+        when: "@2.4:"
+      - spec: +lzma
+        when: "@2.4:"
+      - spec: +libaom
+        when: "@4.0:"
+      - spec: +libsnappy
+        when: "@2.7:"
+      - spec: +libssh
+        when: "@2.1:"
+      - spec: +libwebp
+        when: "@2.2:"
+      - spec: +libzmq
+        when: "@2.0:"
+      - spec: +avresample
+        when: "@0.11:4.4"
+      - spec: +sdl2
+        when: "@3.2:"

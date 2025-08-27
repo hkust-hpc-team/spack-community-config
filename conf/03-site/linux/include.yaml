@@ -15,6 +15,7 @@ include:
   - path: package-policies/mpi-roce-slurm.yaml
   - path: package-policies/apps/boost.yaml
   - path: package-policies/apps/cuda.yaml
+  - path: package-policies/apps/ffmpeg.yaml
   - path: package-policies/apps/hdf5-netcdf.yaml
   - path: package-policies/apps/perl.yaml
   - path: package-policies/apps/r.yaml
