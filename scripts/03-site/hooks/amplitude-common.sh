@@ -31,18 +31,28 @@ join_by() {
 version_is_architecture() {
   local ver="${1:-}"
   case "${ver}" in
-    i686|x86|x86_64|x86_64_v2|x86_64_v3|x86_64_v4|
-    core2|nocona|prescott|pentium2|pentium3|pentium4|
-    nehalem|westmere|sandybridge|ivybridge|haswell|broadwell|
-    skylake|skylake_avx512|cannonlake|icelake|cascadelake|sapphirerapids|
-    k10|bulldozer|piledriver|steamroller|excavator|
-    zen|zen2|zen3|zen4|zen5|mic_knl|
-    arm|aarch64|armv8.1a|armv8.2a|armv8.3a|armv8.4a|armv8.5a|armv9.0a|
-    cortex_a72|neoverse_n1|neoverse_n2|neoverse_v1|neoverse_v2|a64fx|m1|m2|thunderx2|
-    ppc|ppc64|ppc64le|ppcle|power7|power8|power8le|power9|power9le|power10|power10le|
-    sparc|sparc64|
-    riscv64|u74mc) return 0 ;;
-    *) return 1 ;;
+  # x86 (Intel/AMD) march
+  i686 | x86 | x86_64 | x86_64_v2 | x86_64_v3 | x86_64_v4) return 0 ;;
+  core2 | nocona | prescott | pentium2 | pentium3 | pentium4) return 0 ;;
+  nehalem | westmere | sandybridge | ivybridge | haswell | broadwell) return 0 ;;
+  skylake | skylake_avx512 | cannonlake | icelake | cascadelake | sapphirerapids) return 0 ;;
+  k10 | bulldozer | piledriver | steamroller | excavator) return 0 ;;
+  zen | zen2 | zen3 | zen4 | zen5) return 0 ;;
+  mic_knl) return 0 ;;
+  # Generic ARM
+  arm | aarch64) return 0 ;;
+  armv8.1a | armv8.2a | armv8.3a | armv8.4a | armv8.5a | armv9.0a) return 0 ;;
+  cortex_a72 | neoverse_n1 | neoverse_n2 | neoverse_v1 | neoverse_v2 | a64fx) return 0 ;;
+  m1 | m2) return 0 ;;
+  thunderx2) return 0 ;;
+  # PowerPC march
+  ppc | ppc64 | ppc64le | ppcle) return 0 ;;
+  power7 | power8 | power8le | power9 | power9le | power10 | power10le) return 0 ;;
+  # SPARC march
+  sparc | sparc64) return 0 ;;
+  # RISC-V march
+  riscv64 | u74mc) return 0 ;;
+  *) return 1 ;;
   esac
 }
 
