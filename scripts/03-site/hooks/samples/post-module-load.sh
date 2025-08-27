@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
 # Module-load hook: send a JSON event to Amplitude with module details.
 # Args:
 #   $1 = module full name (e.g., hdf5/1.14.2-01-zen4-ksodqwe)
@@ -62,7 +63,7 @@ amplitude_lmod_send_event() {
   local mod_name="${1:-}" mod_version="${2:-}" mod_version_long="${3:-}" mod_arch="${4:-}"
   if [ -z "${mod_name}" ] || [ -z "${mod_version}" ] || [ -z "${mod_version_long}" ]; then
     [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: missing module details" >&2
-    return 0
+    return 1
   fi
 
   local event_props user_props

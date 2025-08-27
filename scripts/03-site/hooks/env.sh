@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Centralized environment for hook scripts.
 # Do NOT export these; hooks source this file and keep values local to their process.
@@ -7,5 +7,4 @@
 _amplitude_api_key=""
 _amplitude_cluster_id=""
 _amplitude_httpapi_url="https://api2.amplitude.com/2/httpapi"
-
 # Debugging: set SPACK_HOOK_DEBUG=1 to see verbose logs from hooks

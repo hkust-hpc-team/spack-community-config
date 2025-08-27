@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Common helpers for Amplitude-related hooks.
 # Assumes env.sh has been sourced to provide _amplitude_api_key, _amplitude_cluster_id, _amplitude_httpapi_url.
 
