@@ -3,22 +3,20 @@
 # Args:
 #   $1 = module full name (e.g., hdf5/1.14.2-01-zen4-ksodqwe)
 #   $2 = module version    (e.g., 1.14.2-01-zen4-ksodqwe)
-# Config (env):
-#   SPACK_AMPLITUDE_API_KEY      (required)
-#   SPACK_AMPLITUDE_CLUSTER_ID   (required)
-#   SPACK_AMPLITUDE_HTTPAPI_URL  (optional, default: https://api2.amplitude.com/2/httpapi)
 
 set -euo pipefail
 
-[ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Script hooked: ${1:-} (${2:-})" >&2
+#* Fill in these variables for your site
+declare _amplitude_api_key=""
+declare _amplitude_cluster_id=""
+declare _amplitude_httpapi_url="https://api2.amplitude.com/2/httpapi"
 
-declare api_key="${SPACK_AMPLITUDE_API_KEY:-}"
-declare cluster_id="${SPACK_AMPLITUDE_CLUSTER_ID:-}"
-declare httpapi_url="${SPACK_AMPLITUDE_HTTPAPI_URL:-https://api2.amplitude.com/2/httpapi}"
+[ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Script hooked: ${1:-} (${2:-})" >&2
 
 # If missing config or curl, do not interfere with module loading; just exit 0.
 curl_bin="$(command -v curl || true)"
-if [ -z "${api_key}" ] || [ -z "${cluster_id}" ] || [ -z "${curl_bin}" ]; then
+if [ -z "${_amplitude_api_key}" ] || [ -z "${_amplitude_cluster_id}" ] ||
+  [ -z "${_amplitude_httpapi_url}"] || [ -z "${curl_bin}" ]; then
   [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: missing configuration or curl" >&2
   exit 0
 fi
@@ -134,8 +132,8 @@ amplitude_lmod_prepare_event() {
   local username="${USER:-$(whoami 2>/dev/null || echo)}"
   local hostname_fqdn="$(hostname -f 2>/dev/null || hostname 2>/dev/null || echo)"
   local session_date="$(date +%Y-%m-%d)"
-  local device_id="${username}@${cluster_id}/${session_date}"
-  local user_id="${username}@${cluster_id}"
+  local device_id="${username}@${_amplitude_cluster_id}/${session_date}"
+  local user_id="${username}@${_amplitude_cluster_id}"
 
   local _amplitude_spack_variant="${SPACK_VARIANT:-unknown}"
   local _amplitude_spack_disable_local_config="${SPACK_DISABLE_LOCAL_CONFIG:-0}"
@@ -180,10 +178,10 @@ amplitude_lmod_prepare_event() {
     }
   }]
 }' \
-    "$(json_escape "${api_key}")" \
+    "$(json_escape "${_amplitude_api_key}")" \
     "$(json_escape "${device_id}")" \
     "$(json_escape "${user_id}")" \
-    "$(json_escape "${cluster_id}")" \
+    "$(json_escape "${_amplitude_cluster_id}")" \
     "$(json_escape "${username}")" \
     "$(json_escape "${hostname_fqdn}")" \
     "$(json_escape "${mod_name}")" \
@@ -195,7 +193,7 @@ amplitude_lmod_prepare_event() {
     "$(json_escape "${_amplitude_spack_user_cache_path}")" \
     "$(json_escape "${_amplitude_spack_user_config_path}")" \
     "${extra_props}" \
-    "$(json_escape "${cluster_id}")" \
+    "$(json_escape "${_amplitude_cluster_id}")" \
     "$(json_escape "${username}")")
   [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Prepared Amplitude event JSON: ${json_data}" >&2
   echo "${json_data}"
@@ -210,13 +208,13 @@ amplitude_lmod_send_event() {
 
   local max_attempts=3
   local attempt=1
-  while (( attempt <= max_attempts )); do
+  while ((attempt <= max_attempts)); do
     # Small timeouts to avoid blocking module loads
     local response_code
     response_code=$("${curl_bin}" -sS -o /dev/null -w "%{http_code}" \
       --connect-timeout 1 --max-time 2 \
       -A "spack-module-hook/1.0" \
-      -X POST "${httpapi_url}" \
+      -X POST "${_amplitude_httpapi_url}" \
       -H 'Content-Type: application/json' \
       -H 'Accept: */*' \
       --data-binary "${json_data}" || echo "000")
@@ -224,8 +222,8 @@ amplitude_lmod_send_event() {
       return 0
     fi
     [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Amplitude post attempt ${attempt} failed (HTTP ${response_code}), retrying..." >&2
-    sleep "0.$((attempt * 2))"
-    attempt=$(( attempt + 1 ))
+    sleep "$(awk "BEGIN {printf 0.2 * $attempt}")"
+    attempt=$((attempt + 1))
   done
   # Never fail the module load due to analytics
   return 0

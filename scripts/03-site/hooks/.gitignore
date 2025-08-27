@@ -1,2 +1,3 @@
 /post-activate-*.sh
 /pre-activate-*.sh
+/post-module-load.sh
