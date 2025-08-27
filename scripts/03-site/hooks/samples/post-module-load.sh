@@ -65,18 +65,26 @@ version_is_architecture() {
 }
 
 # Join array elements by delimiter
-join_by() { local d="$1"; shift; local first=1; for x in "$@"; do if (( first )); then printf "%s" "$x"; first=0; else printf "%s%s" "$d" "$x"; fi; done; }
+join_by() {
+  local d="$1"
+  shift
+  local first=1
+  for x in "$@"; do if ((first)); then
+    printf "%s" "$x"
+    first=0
+  else printf "%s%s" "$d" "$x"; fi; done
+}
 
 analytics_lmod_send_version() {
   local mod_name="${1%%/*}"
 
   # Split long version into tokens on '-'
   local -a mod_ver_arr=()
-  IFS=' ' read -r -a mod_ver_arr <<< "${2//-/ }"
+  IFS=' ' read -r -a mod_ver_arr <<<"${2//-/ }"
 
-  local mod_ver=""   # everything except last (and second last if architecture)
-  local mod_arch=""  # optional, second last token if matches known architecture
-  local mod_hash=""  # last, 7 characters [a-z0-9]
+  local mod_ver=""  # everything except last (and second last if architecture)
+  local mod_arch="" # optional, second last token if matches known architecture
+  local mod_hash="" # last, 7 characters [a-z0-9]
 
   # must have at least version and hash
   if [ "${#mod_ver_arr[@]}" -lt 2 ]; then
@@ -85,7 +93,7 @@ analytics_lmod_send_version() {
   fi
 
   # check hash format and assign mod_hash
-  local last_idx=$(( ${#mod_ver_arr[@]} - 1 ))
+  local last_idx=$((${#mod_ver_arr[@]} - 1))
   if [[ "${mod_ver_arr[last_idx]}" =~ ^[a-z0-9]{7}$ ]]; then
     mod_hash="${mod_ver_arr[last_idx]}"
   else
@@ -93,7 +101,7 @@ analytics_lmod_send_version() {
     return 0
   fi
 
-  local second_last_idx=$(( ${#mod_ver_arr[@]} - 2 ))
+  local second_last_idx=$((${#mod_ver_arr[@]} - 2))
   local end_idx=$second_last_idx
   if version_is_architecture "${mod_ver_arr[second_last_idx]}"; then
     [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Detected module architecture: ${mod_ver_arr[second_last_idx]}" >&2
@@ -102,12 +110,12 @@ analytics_lmod_send_version() {
       [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: invalid module version format" >&2
       return 0
     fi
-    end_idx=$(( second_last_idx ))
+    end_idx=$((second_last_idx))
   fi
 
   # Build version by joining tokens [0 .. end_idx-1]
-  if (( end_idx > 0 )); then
-    local -a ver_elems=( "${mod_ver_arr[@]:0:${end_idx}}" )
+  if ((end_idx > 0)); then
+    local -a ver_elems=("${mod_ver_arr[@]:0:${end_idx}}")
     mod_ver="$(join_by '-' "${ver_elems[@]}")"
   else
     mod_ver="${mod_ver_arr[0]}"
