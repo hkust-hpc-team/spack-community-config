@@ -6,6 +6,8 @@ We provide python bootstrapping without using spack.
 ## Script
 
 ```
+set -euo pipefail
+
 for i in 3.9 3.10 3.11 3.12 3.13; do
   module load python/$i
   python3 -m ensurepip --upgrade
