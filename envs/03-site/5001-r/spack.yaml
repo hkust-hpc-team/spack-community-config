@@ -8,9 +8,11 @@ spack:
       lmod:
         r:
           template: modules/r-modulefile.lua
+  packages:
+    all:
+      require:
+        - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
-    - matrix:
-        - - r@4.4.1 +X+rmath
-          - rstudio@2024.09.1 ^r@4.4.1 +X+rmath
-        - - platform=linux target=x86_64_v4 %gcc@11.5.0.spack
+    - r
+    - rstudio@2024
   view: false

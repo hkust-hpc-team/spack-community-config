@@ -15,9 +15,17 @@ packages:
       - prefix: /opt/mvapich/plus/4.0/.ucx/mpirun/gcc13.2.0/
         spec: mvapich-plus@4 ~cuda ~rocm netmod=ucx process_managers=slurm
   pmix:
+    conflict:
+      - "%gcc@11.5.0.spack"
     externals:
       - prefix: /usr
         spec: pmix@3.2.3 +munge
+    prefer:
+      - "@5"
+    require:
+      - +munge
+      - spec: +pmi_backwards_compatibility
+        when: "@:3"
   rdma-core:
     buildable: false
     externals:

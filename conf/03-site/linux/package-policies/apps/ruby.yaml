@@ -1,0 +1,7 @@
+packages:
+  ruby:
+    require:
+      - +openssl
+      - +readline
+      - spec: "+yjit"
+        when: "@3.2:"

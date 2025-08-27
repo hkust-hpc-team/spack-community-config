@@ -6,10 +6,12 @@ spack:
       require:
         - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
-    - bash
-    - emacs +json
-    - lua
-    - ocaml
-    - tcl
-    - zsh
+    - matrix:
+        - - openjdk
+        - - "@21"
+          - "@17"
+          - "@11"
+    - ant
+    - gradle
+    - maven
   view: false

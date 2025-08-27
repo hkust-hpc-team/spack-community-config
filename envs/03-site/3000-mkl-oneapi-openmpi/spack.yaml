@@ -6,19 +6,20 @@ spack:
     unify: false
   definitions:
     - goals:
-        - "hdf5"
-        - "netcdf-c"
-        - "netcdf-fortran"
-        - "parallel-netcdf"
-        - "parallelio"
+        - matrix:
+            - - "intel-oneapi-mkl +cluster mpi_family=openmpi threads=tbb"
+            - - "@2025.0.1"
+              - "@2024.2.2"
+              - "@2023.2.0"
     - ccs:
         - matrix:
             - - "target=x86_64_v4"
-            - - "%oneapi@2025.0.4 ^intel-oneapi-runtime@2025%oneapi@2025.0.4"
-              - "%oneapi@2024.2.1 ^intel-oneapi-runtime@2024%oneapi@2024.2.1"
-              - "%oneapi@2023.2.4 ^intel-oneapi-runtime@2023%oneapi@2023.2.4"
+            - - "%oneapi@2025.0.4"
+              - "%oneapi@2024.2.1"
+              - "%oneapi@2023.2.4"
     - mpis:
-        - ^intel-oneapi-mpi@2021
+        - ^openmpi@5
+        - ^openmpi@4
   packages:
     all:
       require:
