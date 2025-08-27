@@ -16,7 +16,7 @@ declare _amplitude_httpapi_url="https://api2.amplitude.com/2/httpapi"
 # If missing config or curl, do not interfere with module loading; just exit 0.
 curl_bin="$(command -v curl || true)"
 if [ -z "${_amplitude_api_key}" ] || [ -z "${_amplitude_cluster_id}" ] ||
-  [ -z "${_amplitude_httpapi_url}"] || [ -z "${curl_bin}" ]; then
+  [ -z "${_amplitude_httpapi_url}" ] || [ -z "${curl_bin}" ]; then
   [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: missing configuration or curl" >&2
   exit 0
 fi
@@ -94,33 +94,29 @@ analytics_lmod_send_version() {
   fi
 
   # check hash format and assign mod_hash
-  local last_idx=$((${#mod_ver_arr[@]} - 1))
+  local version_last_index=${#mod_ver_arr[@]}
+  local last_idx=$((version_last_index - 1))
   if [[ "${mod_ver_arr[last_idx]}" =~ ^[a-z0-9]{7}$ ]]; then
     mod_hash="${mod_ver_arr[last_idx]}"
+    version_last_index=$((version_last_index - 1))
   else
     [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: invalid module hash format" >&2
     return 0
   fi
 
-  local second_last_idx=$((${#mod_ver_arr[@]} - 2))
-  local end_idx=$second_last_idx
-  if version_is_architecture "${mod_ver_arr[second_last_idx]}"; then
-    [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Detected module architecture: ${mod_ver_arr[second_last_idx]}" >&2
-    mod_arch="${mod_ver_arr[second_last_idx]}"
+  last_idx=$((version_last_index - 1))
+  if version_is_architecture "${mod_ver_arr[last_idx]}"; then
+    [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Detected module architecture: ${mod_ver_arr[last_idx]}" >&2
+    mod_arch="${mod_ver_arr[last_idx]}"
     if [ "${#mod_ver_arr[@]}" -lt 3 ]; then
       [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: invalid module version format" >&2
       return 0
     fi
-    end_idx=$((second_last_idx))
+    version_last_index=$((version_last_index - 1))
   fi
 
-  # Build version by joining tokens [0 .. end_idx-1]
-  if ((end_idx > 0)); then
-    local -a ver_elems=("${mod_ver_arr[@]:0:${end_idx}}")
-    mod_ver="$(join_by '-' "${ver_elems[@]}")"
-  else
-    mod_ver="${mod_ver_arr[0]}"
-  fi
+  local -a ver_elems=("${mod_ver_arr[@]:0:${version_last_index}}")
+  mod_ver="$(join_by '-' "${ver_elems[@]}")"
 
   [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Parsed module: name='${mod_name}', version='${mod_ver}', architecture='${mod_arch}', hash='${mod_hash}'" >&2
 
