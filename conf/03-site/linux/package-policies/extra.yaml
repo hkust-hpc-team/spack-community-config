@@ -37,6 +37,12 @@ packages:
   libsigsegv:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libssh2:
+    require:
+      - build_system=autotools
+      - crypto=openssl
+      - +shared
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
   libunistring:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
@@ -69,6 +75,11 @@ packages:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   python-venv:
     require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  re2c:
+    require:
+      - build_system=autotools
+      - ^python@3.11
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   readline:
     require:
