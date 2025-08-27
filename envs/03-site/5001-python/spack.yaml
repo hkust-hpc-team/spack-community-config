@@ -10,12 +10,18 @@ spack:
     all:
       require:
         - "target=x86_64_v4 %gcc@11.5.0.spack"
+  definitions:
+    - pyvers:
+        - "@3.13"
+        - "@3.12"
+        - "@3.11"
+        - "@3.10"
+        - "@3.9"
+    - pythons:
+        - matrix:
+            - - python
+            - - $pyvers
   specs:
-    - matrix:
-        - - python
-        - - "@3.13"
-          - "@3.12"
-          - "@3.11"
-          - "@3.10"
-          - "@3.9"
+    - anaconda3
+    - $pythons
   view: false
