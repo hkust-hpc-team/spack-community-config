@@ -10,6 +10,7 @@ spack:
     - bazel
     - cmake
     - doxygen
+    - easybuild
     - fpm
     - gmake
     - meson
