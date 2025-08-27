@@ -68,12 +68,13 @@ version_is_architecture() {
 join_by() {
   local d="$1"
   shift
-  local first=1
-  for x in "$@"; do if ((first)); then
-    printf "%s" "$x"
-    first=0
-  else printf "%s%s" "$d" "$x"; fi; done
+  if [ $# -gt 0 ]; then
+    printf "%s" "$1"
+    shift
+    printf "%s" "${@/#/$d}"
+  fi
 }
+
 
 analytics_lmod_send_version() {
   local mod_name="${1%%/*}"
