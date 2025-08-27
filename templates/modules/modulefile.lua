@@ -101,7 +101,7 @@ append_path("MANPATH", "", ":")
 local ok, m = pcall(mode)
 if ok and m == "load" then
   local spack_root = os.getenv("SPACK_ROOT")
-  local script = spack_root .. "/dist/hooks/post-module-load.sh"
+  local script = spack_root .. "/dist/bin/hooks/post-module-load.sh"
   if script and #script > 0 then
     local function sh_quote(s)
       s = s or ""
