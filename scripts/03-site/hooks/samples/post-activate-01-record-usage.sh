@@ -1,8 +1,33 @@
 #!/bin/bash
 
+set -euo pipefail
+
 # Source centralized config and helpers (do not export secrets to user env)
-source "$SPACK_ROOT/dist/bin/hooks/env.sh"
-source "$SPACK_ROOT/dist/bin/hooks/amplitude-common.sh"
+HOOKS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_SH="${HOOKS_DIR}/env.sh"
+COMMON_SH="${HOOKS_DIR}/amplitude-common.sh"
+
+# Fallback to SPACK_ROOT if files are missing and SPACK_ROOT is set
+if [ ! -f "$ENV_SH" ] && [ -n "${SPACK_ROOT}" ] && [ -d "${SPACK_ROOT}/dist/bin/hooks" ]; then
+  ENV_SH="${SPACK_ROOT}/dist/bin/hooks/env.sh"
+fi
+if [ ! -f "$COMMON_SH" ] && [ -n "${SPACK_ROOT}" ] && [ -d "${SPACK_ROOT}/dist/bin/hooks" ]; then
+  COMMON_SH="${SPACK_ROOT}/dist/bin/hooks/amplitude-common.sh"
+fi
+
+# Check if files exist and are readable
+if [ ! -f "$ENV_SH" ] || [ ! -r "$ENV_SH" ]; then
+  [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Error: env.sh not found or not readable; skipping Amplitude hook" >&2
+  exit 0
+fi
+if [ ! -f "$COMMON_SH" ] || [ ! -r "$COMMON_SH" ]; then
+  [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Error: amplitude-common.sh not found or not readable; skipping Amplitude hook" >&2
+  exit 0
+fi
+
+# Source the files
+source "${ENV_SH}" || { echo "Error sourcing env.sh" >&2; exit 0; }
+source "${COMMON_SH}" || { echo "Error sourcing amplitude-common.sh" >&2; exit 0; }
 
 
 amplitude_track_spack_activate() {
