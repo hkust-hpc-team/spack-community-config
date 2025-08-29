@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # Sample env for Amplitude hooks. Copy this to env.sh and fill values to enable.
 
 # Do NOT export these variables; hooks source this file and keep them local to their process.
