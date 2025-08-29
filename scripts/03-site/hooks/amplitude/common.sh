@@ -92,8 +92,8 @@ amplitude_common_event_props() {
   local extras=${1:-}
   printf '{"slurm_cluster":"%s","slurm_username":"%s","slurm_hostname":"%s","slurm_job_id":"%s","spack_variant":"%s","spack_disable_local_config":"%s","spack_root":"%s","spack_user_cache_path":"%s","spack_user_config_path":"%s"%s}' \
     "$(json_escape "${_amplitude_cluster_id}")" \
-    "$(json_escape "${USER:-$(whoami 2>/dev/null || echo)}")" \
-    "$(json_escape "$(hostname -f 2>/dev/null || hostname 2>/dev/null || echo)")" \
+    "$(json_escape "${_amplitude_username}")" \
+    "$(json_escape "${_amplitude_hostname_fqdn}")" \
     "$(json_escape "${SLURM_JOB_ID:-unknown}")" \
     "$(json_escape "${SPACK_VARIANT:-unknown}")" \
     "$(json_escape "${SPACK_DISABLE_LOCAL_CONFIG:-0}")" \
@@ -110,7 +110,7 @@ amplitude_build_json() {
   shift
   local event_props="$1"
   shift || true
-  local user_props=${1:-""}
+  local user_props=${1:-"{}"}
   shift || true
   local device_id="${_amplitude_username}@${_amplitude_cluster_id}/${_amplitude_session_date}"
   local user_id="${_amplitude_username}@${_amplitude_cluster_id}"
