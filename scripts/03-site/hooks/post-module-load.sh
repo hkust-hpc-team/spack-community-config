@@ -10,7 +10,7 @@ set -euo pipefail
 [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Script hooked: ${1:-} (${2:-})" >&2
 
 # Source centralized config and helpers (do not export secrets to user env)
-HOOKS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HOOKS_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
 ENV_SH="${HOOKS_DIR}/env.sh"
 COMMON_SH="${HOOKS_DIR}/amplitude/common.sh"
 

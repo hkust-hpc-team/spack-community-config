@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Source centralized config and helpers (do not export secrets to user env)
-HOOKS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HOOKS_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
 ENV_SH="${HOOKS_DIR}/env.sh"
 COMMON_SH="${HOOKS_DIR}/amplitude/common.sh"
 
