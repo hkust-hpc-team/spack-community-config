@@ -7,6 +7,8 @@
 
 set -euo pipefail
 
+[ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Script hooked: ${1:-} (${2:-})" >&2
+
 # Source centralized config and helpers (do not export secrets to user env)
 HOOKS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENV_SH="${HOOKS_DIR}/env.sh"
@@ -22,11 +24,9 @@ fi
 
 # Check if files exist and are readable
 if [ ! -f "$ENV_SH" ] || [ ! -r "$ENV_SH" ]; then
-  [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Error: env.sh not found or not readable; skipping Amplitude hook" >&2
   exit 0
 fi
 if [ ! -f "$COMMON_SH" ] || [ ! -r "$COMMON_SH" ]; then
-  [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Error: amplitude-common.sh not found or not readable; skipping Amplitude hook" >&2
   exit 0
 fi
 
@@ -35,7 +35,6 @@ source "${ENV_SH}" || { echo "Error sourcing env.sh" >&2; exit 0; }
 source "${COMMON_SH}" || { echo "Error sourcing amplitude-common.sh" >&2; exit 0; }
 
 
-[ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Script hooked: ${1:-} (${2:-})" >&2
 
 if [ -z "${1:-}" ] || [ -z "${2:-}" ]; then
   [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: missing module arguments" >&2

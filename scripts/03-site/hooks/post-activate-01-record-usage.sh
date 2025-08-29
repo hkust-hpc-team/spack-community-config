@@ -17,11 +17,9 @@ fi
 
 # Check if files exist and are readable
 if [ ! -f "$ENV_SH" ] || [ ! -r "$ENV_SH" ]; then
-  [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Error: env.sh not found or not readable; skipping Amplitude hook" >&2
   exit 0
 fi
 if [ ! -f "$COMMON_SH" ] || [ ! -r "$COMMON_SH" ]; then
-  [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Error: amplitude-common.sh not found or not readable; skipping Amplitude hook" >&2
   exit 0
 fi
 
