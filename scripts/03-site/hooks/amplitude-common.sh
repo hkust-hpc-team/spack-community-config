@@ -84,10 +84,9 @@ amplitude_send_json() {
 
 # Build common identity fields
 amplitude_identity_fill() {
-  local username hostname_fqdn session_date
-  username="${USER:-$(whoami 2>/dev/null || echo)}"
-  hostname_fqdn="$(hostname -f 2>/dev/null || hostname 2>/dev/null || echo)"
-  session_date="$(date +%Y-%m-%d)"
+  local username="${USER:-$(whoami 2>/dev/null || echo)}"
+  local hostname_fqdn="$(hostname -f 2>/dev/null || hostname 2>/dev/null || echo)"
+  local session_date="$(date +%Y-%m-%d)"
   echo "${username}" "${hostname_fqdn}" "${session_date}"
 }
 
