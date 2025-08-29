@@ -35,7 +35,7 @@ amplitude_track_spack_activate() {
   fi
 
   local event_props user_props
-  event_props=$(printf '{"cluster":"%s","username":"%s","hostname":"%s","spack_variant":"%s","spack_disable_local_config":"%s","spack_root":"%s","spack_user_cache_path":"%s","spack_user_config_path":"%s"%s}' \
+  event_props=$(printf '{"slurm_cluster":"%s","slurm_username":"%s","slurm_hostname":"%s","spack_variant":"%s","spack_disable_local_config":"%s","spack_root":"%s","spack_user_cache_path":"%s","spack_user_config_path":"%s"%s}' \
     "$(json_escape "${_amplitude_cluster_id}")" \
     "$(json_escape "${USER:-$(whoami 2>/dev/null || echo)}")" \
     "$(json_escape "$(hostname -f 2>/dev/null || hostname 2>/dev/null || echo)")" \

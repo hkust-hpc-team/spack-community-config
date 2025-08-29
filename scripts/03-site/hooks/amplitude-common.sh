@@ -124,7 +124,7 @@ amplitude_build_json() {
 # Default user_properties include cluster and username
 amplitude_default_user_props() {
   local username; username="${USER:-$(whoami 2>/dev/null || echo)}"
-  printf '{"cluster":"%s","username":"%s"}' \
+  printf '{"slurm_cluster":"%s","slurm_username":"%s"}' \
     "$(json_escape "${_amplitude_cluster_id}")" \
     "$(json_escape "${username}")"
 }
