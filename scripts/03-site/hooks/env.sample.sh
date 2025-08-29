@@ -6,5 +6,6 @@
 _amplitude_api_key=""
 _amplitude_cluster_id=""
 _amplitude_httpapi_url="https://api2.amplitude.com/2/httpapi"
+_spack_module_default_arch="x86_64_v4"
 
 # Debugging: set SPACK_HOOK_DEBUG=1 in the environment to enable verbose logs from hooks

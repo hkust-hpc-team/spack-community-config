@@ -20,14 +20,15 @@ json_escape() {
 
 # Join array elements by delimiter
 join_by() {
-  local d="$1"; shift
+  local d="$1"
+  shift
   if [ $# -gt 0 ]; then
-    printf "%s" "$1"; shift
+    printf "%s" "$1"
+    shift
     printf "%s" "${@/#/$d}"
   fi
 }
 
-# Heuristic: whether a token looks like a CPU architecture name
 version_is_architecture() {
   local ver="${1:-}"
   case "${ver}" in
@@ -56,18 +57,17 @@ version_is_architecture() {
   esac
 }
 
-# Send a single event JSON to Amplitude. Never fails the caller; retries briefly and returns 0.
 amplitude_send_json() {
   local json_data="$1"
   if ! amplitude_is_configured; then
     [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude: not configured or curl missing" >&2
     return 0
   fi
-  local curl_bin; curl_bin="$(command -v curl)"
-  local max_attempts=3 attempt=1
-  while (( attempt <= max_attempts )); do
-    local code
-    code=$("${curl_bin}" -sS -o /dev/null -w "%{http_code}" \
+  local curl_bin="$(command -v curl)"
+  local max_attempts=3
+  local attempt=1
+  while ((attempt <= max_attempts)); do
+    local code=$("${curl_bin}" -sS -o /dev/null -w "%{http_code}" \
       --connect-timeout 1 --max-time 2 \
       -A "spack-module-hook/1.0" \
       -X POST "${_amplitude_httpapi_url}" \
@@ -77,7 +77,7 @@ amplitude_send_json() {
     [[ "${code}" =~ ^20[0-9]$ ]] && return 0
     [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Amplitude post attempt ${attempt} failed (HTTP ${code}), retrying..." >&2
     sleep "$(awk "BEGIN {printf 0.2 * ${attempt}}")"
-    attempt=$((attempt+1))
+    attempt=$((attempt + 1))
   done
   return 0
 }
@@ -109,14 +109,19 @@ amplitude_common_event_props() {
 # Build an Amplitude JSON for an event with event_properties and user_properties.
 # Args: event_type, kv pairs for event_properties (already JSON escaped), and optional extra fields hook may add.
 amplitude_build_json() {
-  local event_type="$1"; shift
-  local username hostname_fqdn session_date
+  local event_type="$1"
+  shift
+  local event_props="$1"
+  shift || true
+  local user_props=${1:-""}
+  shift || true
+
+  local username
+  local hostname_fqdn
+  local session_date
   read -r username hostname_fqdn session_date < <(amplitude_identity_fill)
   local device_id="${username}@${_amplitude_cluster_id}/${session_date}"
   local user_id="${username}@${_amplitude_cluster_id}"
-
-  local event_props="$1"; shift || true
-  local user_props=${1:-""}; shift || true
 
   printf '{
   "api_key": "%s",
@@ -136,9 +141,8 @@ amplitude_build_json() {
     "${user_props}"
 }
 
-# Default user_properties include cluster and username
 amplitude_default_user_props() {
-  local username; username="${USER:-$(whoami 2>/dev/null || echo)}"
+  local username="${USER:-$(whoami 2>/dev/null || echo)}"
   printf '{"slurm_cluster":"%s","slurm_username":"%s"}' \
     "$(json_escape "${_amplitude_cluster_id}")" \
     "$(json_escape "${username}")"
