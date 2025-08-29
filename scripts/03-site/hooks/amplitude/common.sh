@@ -4,6 +4,10 @@
 
 set -o pipefail
 
+declare _amplitude_username="${USER:-$(whoami 2>/dev/null || echo)}"
+declare _amplitude_hostname_fqdn="$(hostname -f 2>/dev/null || hostname 2>/dev/null || echo)"
+declare _amplitude_session_date="$(date +%Y-%m-%d)"
+
 amplitude_is_configured() {
   command -v curl >/dev/null 2>&1 || return 1
   [ -n "${_amplitude_api_key:-}" ] && [ -n "${_amplitude_cluster_id:-}" ] && [ -n "${_amplitude_httpapi_url:-}" ]
@@ -82,14 +86,6 @@ amplitude_send_json() {
   return 0
 }
 
-# Build common identity fields
-amplitude_identity_fill() {
-  local username="${USER:-$(whoami 2>/dev/null || echo)}"
-  local hostname_fqdn="$(hostname -f 2>/dev/null || hostname 2>/dev/null || echo)"
-  local session_date="$(date +%Y-%m-%d)"
-  echo "${username}" "${hostname_fqdn}" "${session_date}"
-}
-
 # Build common event_properties shared by all events, with optional extra JSON pairs.
 # Usage: amplitude_common_event_props "key1":"val1","key2":"val2"  (no surrounding braces)
 amplitude_common_event_props() {
@@ -116,13 +112,8 @@ amplitude_build_json() {
   shift || true
   local user_props=${1:-""}
   shift || true
-
-  local username
-  local hostname_fqdn
-  local session_date
-  read -r username hostname_fqdn session_date < <(amplitude_identity_fill)
-  local device_id="${username}@${_amplitude_cluster_id}/${session_date}"
-  local user_id="${username}@${_amplitude_cluster_id}"
+  local device_id="${_amplitude_username}@${_amplitude_cluster_id}/${_amplitude_session_date}"
+  local user_id="${_amplitude_username}@${_amplitude_cluster_id}"
 
   printf '{
   "api_key": "%s",
@@ -143,8 +134,7 @@ amplitude_build_json() {
 }
 
 amplitude_default_user_props() {
-  local username="${USER:-$(whoami 2>/dev/null || echo)}"
   printf '{"slurm_cluster":"%s","slurm_username":"%s"}' \
     "$(json_escape "${_amplitude_cluster_id}")" \
-    "$(json_escape "${username}")"
+    "$(json_escape "${_amplitude_username}")"
 }
