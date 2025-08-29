@@ -91,6 +91,22 @@ amplitude_identity_fill() {
   echo "${username}" "${hostname_fqdn}" "${session_date}"
 }
 
+# Build common event_properties shared by all events, with optional extra JSON pairs.
+# Usage: amplitude_common_event_props "key1":"val1","key2":"val2"  (no surrounding braces)
+amplitude_common_event_props() {
+  local extras=${1:-}
+  printf '{"slurm_cluster":"%s","slurm_username":"%s","slurm_hostname":"%s","spack_variant":"%s","spack_disable_local_config":"%s","spack_root":"%s","spack_user_cache_path":"%s","spack_user_config_path":"%s"%s}' \
+    "$(json_escape "${_amplitude_cluster_id}")" \
+    "$(json_escape "${USER:-$(whoami 2>/dev/null || echo)}")" \
+    "$(json_escape "$(hostname -f 2>/dev/null || hostname 2>/dev/null || echo)")" \
+    "$(json_escape "${SPACK_VARIANT:-unknown}")" \
+    "$(json_escape "${SPACK_DISABLE_LOCAL_CONFIG:-0}")" \
+    "$(json_escape "${SPACK_ROOT:-unknown}")" \
+    "$(json_escape "${SPACK_USER_CACHE_PATH:-unknown}")" \
+    "$(json_escape "${SPACK_USER_CONFIG_PATH:-unknown}")" \
+    "$([ -n "${extras}" ] && printf ',%s' "${extras}")"
+}
+
 # Build an Amplitude JSON for an event with event_properties and user_properties.
 # Args: event_type, kv pairs for event_properties (already JSON escaped), and optional extra fields hook may add.
 amplitude_build_json() {

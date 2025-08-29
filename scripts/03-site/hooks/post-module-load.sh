@@ -18,12 +18,12 @@ COMMON_SH="${HOOKS_DIR}/amplitude-common.sh"
 if [ ! -f "$ENV_SH" ] && [ -n "${SPACK_ROOT}" ] && [ -d "${SPACK_ROOT}/dist/bin/hooks" ]; then
   ENV_SH="${SPACK_ROOT}/dist/bin/hooks/env.sh"
 fi
-if [ ! -f "$COMMON_SH" ] && [ -n "${SPACK_ROOT}" ] && [ -d "${SPACK_ROOT}/dist/bin/hooks" ]; then
-  COMMON_SH="${SPACK_ROOT}/dist/bin/hooks/amplitude-common.sh"
-fi
-
-# Check if files exist and are readable
-if [ ! -f "$ENV_SH" ] || [ ! -r "$ENV_SH" ]; then
+    event_props=$(amplitude_common_event_props \
+      "$(printf '"module_name":"%s","module_version":"%s","module_version_long":"%s"%s' \
+        "$(json_escape "${mod_name}")" \
+        "$(json_escape "${mod_version}")" \
+        "$(json_escape "${mod_version_long}")" \
+        "$([ -n "${mod_arch}" ] && printf ',"module_architecture":"%s"' "$(json_escape "${mod_arch}")")")")
   exit 0
 fi
 if [ ! -f "$COMMON_SH" ] || [ ! -r "$COMMON_SH" ]; then
@@ -89,19 +89,12 @@ amplitude_lmod_send_event() {
   fi
 
   local event_props user_props
-  event_props=$(printf '{"slurm_cluster":"%s","slurm_username":"%s","slurm_hostname":"%s","module_name":"%s","module_version":"%s","module_version_long":"%s","spack_variant":"%s","spack_disable_local_config":"%s","spack_root":"%s","spack_user_cache_path":"%s","spack_user_config_path":"%s"%s}' \
-    "$(json_escape "${_amplitude_cluster_id}")" \
-    "$(json_escape "${USER:-$(whoami 2>/dev/null || echo)}")" \
-    "$(json_escape "$(hostname -f 2>/dev/null || hostname 2>/dev/null || echo)")" \
-    "$(json_escape "${mod_name}")" \
-    "$(json_escape "${mod_version}")" \
-    "$(json_escape "${mod_version_long}")" \
-    "$(json_escape "${SPACK_VARIANT:-unknown}")" \
-    "$(json_escape "${SPACK_DISABLE_LOCAL_CONFIG:-0}")" \
-    "$(json_escape "${SPACK_ROOT:-unknown}")" \
-    "$(json_escape "${SPACK_USER_CACHE_PATH:-unknown}")" \
-    "$(json_escape "${SPACK_USER_CONFIG_PATH:-unknown}")" \
-    "$([ -n "${mod_arch}" ] && printf ',"module_architecture":"%s"' "$(json_escape "${mod_arch}")")")
+  event_props=$(amplitude_common_event_props \
+    $(printf '"module_name":"%s","module_version":"%s","module_version_long":"%s"%s' \
+      "$(json_escape "${mod_name}")" \
+      "$(json_escape "${mod_version}")" \
+      "$(json_escape "${mod_version_long}")" \
+      "$([ -n "${mod_arch}" ] && printf ',"module_architecture":"%s"' "$(json_escape "${mod_arch}")")"))
   user_props=$(amplitude_default_user_props)
 
   local json
