@@ -84,18 +84,18 @@ amplitude_lmod_send_event() {
   local mod_name="${1:-}"
   local mod_version="${2:-}"
   local mod_version_long="${3:-}"
-  local mod_arch="${4:-${_spack_module_default_arch:-}}"
+  local mod_arch="${4:-${_spack_module_default_arch}}"
   if [ -z "${mod_name}" ] || [ -z "${mod_version}" ] || [ -z "${mod_version_long}" ]; then
     [ -n "${SPACK_HOOK_DEBUG:-}" ] && echo "Skipping Amplitude event: missing module details" >&2
     return 0
   fi
 
   local event_props=$(amplitude_common_event_props \
-    $(printf '"module_name":"%s","module_version":"%s","module_version_long":"%s"%s' \
+    $(printf '"module_name":"%s","module_version":"%s","module_version_long":"%s","module_arch":"%s"' \
       "$(json_escape "${mod_name}")" \
       "$(json_escape "${mod_version}")" \
       "$(json_escape "${mod_version_long}")" \
-      "$([ -n "${mod_arch}" ] && printf ',"module_architecture":"%s"' "$(json_escape "${mod_arch}")")"))
+      "$(json_escape "${mod_arch}")"))
   local user_props=$(amplitude_default_user_props)
 
   local json=$(amplitude_build_json "Module Load" "${event_props}" "${user_props}")
