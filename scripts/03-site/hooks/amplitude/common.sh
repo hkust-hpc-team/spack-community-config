@@ -94,10 +94,11 @@ amplitude_identity_fill() {
 # Usage: amplitude_common_event_props "key1":"val1","key2":"val2"  (no surrounding braces)
 amplitude_common_event_props() {
   local extras=${1:-}
-  printf '{"slurm_cluster":"%s","slurm_username":"%s","slurm_hostname":"%s","spack_variant":"%s","spack_disable_local_config":"%s","spack_root":"%s","spack_user_cache_path":"%s","spack_user_config_path":"%s"%s}' \
+  printf '{"slurm_cluster":"%s","slurm_username":"%s","slurm_hostname":"%s","slurm_job_id":"%s","spack_variant":"%s","spack_disable_local_config":"%s","spack_root":"%s","spack_user_cache_path":"%s","spack_user_config_path":"%s"%s}' \
     "$(json_escape "${_amplitude_cluster_id}")" \
     "$(json_escape "${USER:-$(whoami 2>/dev/null || echo)}")" \
     "$(json_escape "$(hostname -f 2>/dev/null || hostname 2>/dev/null || echo)")" \
+    "$(json_escape "${SLURM_JOB_ID:-unknown}")" \
     "$(json_escape "${SPACK_VARIANT:-unknown}")" \
     "$(json_escape "${SPACK_DISABLE_LOCAL_CONFIG:-0}")" \
     "$(json_escape "${SPACK_ROOT:-unknown}")" \

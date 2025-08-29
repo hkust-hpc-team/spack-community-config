@@ -34,8 +34,7 @@ amplitude_track_spack_activate() {
     return 0
   fi
 
-  local event_props=$(amplitude_common_event_props \
-    "$([ -n "${SLURM_JOB_ID:-}" ] && printf '"slurm_job_id":"%s"' "$(json_escape "${SLURM_JOB_ID}")")")
+  local event_props=$(amplitude_common_event_props)
   local user_props=$(amplitude_default_user_props)
 
   local json=$(amplitude_build_json "Activate Spack" "${event_props}" "${user_props}")
