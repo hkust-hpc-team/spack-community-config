@@ -6,7 +6,6 @@ include:
   - path: package-policies/compilers/commons.yaml
   - path: package-policies/compilers/aocc.yaml
   - path: package-policies/compilers/gcc.yaml
-  - path: package-policies/compilers/llvm.yaml
   - path: package-policies/compilers/nvhpc.yaml
   - path: package-policies/compilers/oneapi.yaml
   - path: package-policies/externals/gui-external.yaml
