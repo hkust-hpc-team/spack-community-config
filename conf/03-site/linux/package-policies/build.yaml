@@ -132,10 +132,26 @@ packages:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   python:
     prefer:
+      - +bz2
+      - +crypt
+      - +ctypes
+      - +dbm
+      - ~debug
+      - +libxml2
+      - +lzma
+      - +optimizations
+      - +pic
       - ~pyexpat
+      - +pythoncmd
+      - +readline
+      - +shared
+      - +sqlite3
+      - +ssl
+      - ~tkinter
+      - +uuid
+      - +zlib
       - "@3.11"
     require:
-      - +optimizations
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   python-venv:
     require:
