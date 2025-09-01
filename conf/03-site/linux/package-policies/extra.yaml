@@ -11,6 +11,9 @@ packages:
   ca-certificates-mozilla:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+  elfutils:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
   gdbm:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
@@ -29,6 +32,9 @@ packages:
       - +shared
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   libedit:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libffi:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   libidn2:
@@ -62,6 +68,9 @@ packages:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   nghttp2:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
+  pcre:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   pigz:
