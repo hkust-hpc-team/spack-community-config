@@ -150,6 +150,10 @@ function _spack_variant_init() {
   fi
   export TMPDIR="$_tmpdir"
   export TMP="$TMPDIR"
+
+  # Disable Lmod caching to prevent stale module information
+  export LMOD_CACHED_LOADS="no"
+
   mkdir -p "$TMP"
   return $?
 }
