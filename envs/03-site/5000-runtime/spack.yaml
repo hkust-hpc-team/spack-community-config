@@ -11,5 +11,6 @@ spack:
     - lua
     - ocaml
     - tcl
+    - tcsh
     - zsh
   view: false
