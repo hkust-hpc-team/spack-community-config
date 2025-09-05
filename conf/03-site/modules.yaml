@@ -31,12 +31,19 @@ modules:
       - CMAKE_PREFIX_PATH
     ./bin:
       - PATH
+    ./include:
+      - CPATH
+      - C_INCLUDE_PATH
+      - CPLUS_INCLUDE_PATH
+      - INCLUDE
     ./lib:
       - LD_LIBRARY_PATH
+      - LIBRARY_PATH
     ./lib/pkgconfig:
       - PKG_CONFIG_PATH
     ./lib64:
       - LD_LIBRARY_PATH
+      - LIBRARY_PATH
     ./lib64/pkgconfig:
       - PKG_CONFIG_PATH
     ./man:
