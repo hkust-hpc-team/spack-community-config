@@ -1,6 +1,6 @@
 {% extends "modules/modulefile.lua" %}
 {% block footer %}
-local perl5_home = "~/.perl5"
+local perl5_home = os.getenv("HOME") .. "/.perl5"
 execute{cmd = "mkdir -p " .. perl5_home .. "/lib/perl5", modeA={"load"}}
 execute{cmd = "mkdir -p " .. perl5_home .. "/bin", modeA={"load"}}
 
