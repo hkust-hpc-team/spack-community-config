@@ -11,6 +11,10 @@ set -euo pipefail
 for i in 3.9 3.10 3.11 3.12 3.13; do
   module load python/$i
   python_cmd="$(command -v python$i)"
+  if [[ -z "$python_cmd" ]]; then
+    echo "Python $i not found, skipping"
+    continue
+  fi
   echo "Using $python_cmd"
   $python_cmd -m ensurepip --upgrade
   $python_cmd -m pip install --upgrade pip virtualenv uv pdm poetry
