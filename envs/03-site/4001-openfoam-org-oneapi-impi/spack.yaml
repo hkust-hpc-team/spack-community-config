@@ -1,0 +1,33 @@
+spack:
+  concretizer:
+    targets:
+      granularity: microarchitectures
+      host_compatible: false
+    unify: false
+  definitions:
+    - goals:
+        - matrix:
+            - - openfoam-org
+            - - "@12"
+              - "@11"
+    - ccs:
+        - matrix:
+            - - "target=x86_64_v4"
+            - - "%oneapi@2025.0.4 ^intel-oneapi-runtime@2025%oneapi@2025.0.4"
+    - mpis:
+        - ^intel-oneapi-mpi@2021
+  packages:
+    all:
+      require:
+        - one_of:
+            - "target=x86_64_v4 %oneapi@:"
+            - "target=x86_64_v4 %gcc@11.5.0.spack"
+    gcc-runtime:
+      require:
+        - "target=x86_64_v4 %gcc@11.5.0.spack"
+  specs:
+    - matrix:
+        - - $goals
+        - - $ccs
+        - - $mpis
+  view: false
