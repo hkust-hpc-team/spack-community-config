@@ -25,6 +25,8 @@ modules:
         environment:
           "set:":
             I_MPI_FABRICS: "shm:ofi"
+      mpich:
+        autoload: direct
       openmpi:
         autoload: direct
       projections:
