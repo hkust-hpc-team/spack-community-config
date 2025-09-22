@@ -6,16 +6,29 @@ modules:
     lmod:
       all:
         autoload: run
+      aocc:
+        autoload: direct
       core_compilers:
         - gcc@11.5.0.spack
+      gcc:
+        autoload: direct
       hide_implicits: true
       hierarchy:
         - mpi
         - compiler
+      intel-oneapi-compilers:
+        autoload: direct
+      intel-oneapi-compilers-classic:
+        autoload: direct
       intel-oneapi-mpi:
+        autoload: direct
         environment:
           "set:":
             I_MPI_FABRICS: "shm:ofi"
+      mpich:
+        autoload: direct
+      openmpi:
+        autoload: direct
       projections:
         all: "{name}/{version}"
         hdf5: "{name}/{version}-{target.name}"
