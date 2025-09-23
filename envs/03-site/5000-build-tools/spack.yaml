@@ -8,12 +8,18 @@ spack:
   specs:
     - autotools
     - bazel
+    - binutils
+    - bison
     - cmake
     - doxygen
     - easybuild
+    - flex
     - fpm
     - gmake
+    - googletest
     - meson
     - ninja
     - scons
+    - swig
+    - texinfo
   view: false
