@@ -1,15 +1,10 @@
 spack:
   concretizer:
+    reuse: false
+    targets:
+      granularity: generic
+      host_compatible: true
     unify: false
-  modules:
-    default:
-      lmod:
-        anaconda3:
-          template: modules/anaconda3-modulefile.lua
-  packages:
-    all:
-      require:
-        - "target=x86_64_v4 %gcc@11.5.0.spack"
   definitions:
     - pyvers:
         - "@3.13"
@@ -21,6 +16,15 @@ spack:
         - matrix:
             - - python
             - - $pyvers
+  modules:
+    default:
+      lmod:
+        anaconda3:
+          template: modules/anaconda3-modulefile.lua
+  packages:
+    all:
+      require:
+        - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
     - anaconda3
     - $pythons
