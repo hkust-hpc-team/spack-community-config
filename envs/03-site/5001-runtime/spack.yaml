@@ -20,7 +20,6 @@ spack:
         - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
     - dotnet-core-sdk
-    - ghostscript
     - go
     - lua
     - matlab@R2024a
@@ -39,5 +38,4 @@ spack:
     - ruby
     - rust
     - tcl
-    - texlive
   view: false
