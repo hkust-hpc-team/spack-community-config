@@ -39,6 +39,10 @@ modules:
         openmpi: "{name}/{version}-{target.name}"
         parallel-netcdf: "{name}/{version}-{target.name}"
         parallelio: "{name}/{version}-{target.name}"
+      ucx:
+        environment:
+          "set:":
+            UCX_TLS: "rc,knem,sm"
   prefix_inspections:
     ./:
       - CMAKE_PREFIX_PATH
