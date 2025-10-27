@@ -1,5 +1,9 @@
 spack:
   concretizer:
+    reuse: false
+    targets:
+      granularity: generic
+      host_compatible: true
     unify: false
   packages:
     all:

@@ -1,5 +1,9 @@
 spack:
   concretizer:
+    reuse: false
+    targets:
+      granularity: generic
+      host_compatible: true
     unify: false
   packages:
     all:
@@ -7,10 +11,13 @@ spack:
         - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
     - bash
+    - dos2unix
     - emacs +json
-    - lua
-    - ocaml
-    - tcl
+    - expat
+    - gdb
+    - gperf
+    - parallel
+    - screen
     - tcsh
     - zsh
   view: false
