@@ -25,6 +25,8 @@ modules:
         environment:
           "set:":
             I_MPI_FABRICS: "shm:ofi"
+      libfabric:
+        autoload: direct
       mpich:
         autoload: direct
       openmpi:
