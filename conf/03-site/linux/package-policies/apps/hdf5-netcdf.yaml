@@ -8,11 +8,18 @@ packages:
       - +map
       - +mpi
       - +shared
-      - +subfiling
       - +threadsafe
       - +tools
-    require:
       - +szip
+    require:
+      - spec: +mpi +subfiling ^openmpi%aocc
+        when: "%aocc"
+      - one_of:
+          - +mpi +subfiling ^openmpi%oneapi
+          - +mpi +subfiling ^intel-oneapi-mpi%oneapi
+        when: "%oneapi"
+      - spec: "~mpi"
+        when: "%gcc@11.5.0.spack"
   netcdf-c:
     prefer:
       - "@4.9:"
@@ -28,7 +35,14 @@ packages:
       - +szip
       - +zstd
     require:
-      - +parallel-netcdf
+      - spec: +mpi +parallel-netcdf ^openmpi%aocc
+        when: "%aocc"
+      - one_of:
+          - +mpi +parallel-netcdf ^openmpi%oneapi
+          - +mpi +parallel-netcdf ^intel-oneapi-mpi%oneapi
+        when: "%oneapi"
+      - spec: "~mpi ~parallel-netcdf"
+        when: "%gcc@11.5.0.spack"
   parallel-netcdf:
     prefer:
       - "@1.14:"
@@ -41,7 +55,13 @@ packages:
     prefer:
       - "@2.6:"
       - +fortran
-      - +mpi
       - +pnetcdf
       - +shared
       - +ncint
+    require:
+      - spec: +mpi ^openmpi%aocc
+        when: "%aocc"
+      - one_of:
+          - +mpi ^openmpi%oneapi
+          - +mpi ^intel-oneapi-mpi%oneapi
+        when: "%oneapi"
