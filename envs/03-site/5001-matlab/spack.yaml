@@ -10,13 +10,7 @@ spack:
       require:
         - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
-    - dotnet-core-sdk
-    - go
-    - lua
-    - ocaml
-    - octave
-    - perl
-    - ruby
-    - rust
-    - tcl
+    - matlab@R2023b
+    - matlab@R2022b
+    - matlab@R2019b mode=silent
   view: false
