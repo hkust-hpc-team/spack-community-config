@@ -15,7 +15,8 @@ if [ ! -f "$COMMON_SH" ] && [ -n "${SPACK_ROOT}" ] && [ -d "${SPACK_ROOT}/dist/b
   COMMON_SH="${SPACK_ROOT}/dist/bin/hooks/amplitude/common.sh"
 fi
 
-if [ -n "${CI}" ]; then
+if [ "${CI:-false}" != "false" ]; then
+  echo "CI environment detected. Skipping usage tracking." >&2
   exit 0
 fi
 

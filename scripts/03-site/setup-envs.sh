@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -z "${CI}" ] && [ "$(id -u)" -eq 0 ]; then
+if [ "${CI:-false}" == "false" ] && [ "$(id -u)" -eq 0 ]; then
   echo "E=> This script should not be run as root" >&2
   if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     return 1
