@@ -3,11 +3,6 @@ spack:
     targets:
       granularity: generic
       host_compatible: true
-  modules:
-    default:
-      lmod:
-        r:
-          template: modules/r-modulefile.lua
   packages:
     all:
       require:

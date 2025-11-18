@@ -6,6 +6,8 @@ modules:
     lmod:
       all:
         autoload: run
+      anaconda:
+        template: modules/anaconda-modulefile.lua
       aocc:
         autoload: direct
       core_compilers:
@@ -27,10 +29,14 @@ modules:
             I_MPI_FABRICS: "shm:ofi"
       libfabric:
         autoload: direct
+      matlab:
+        template: modules/matlab-modulefile.lua
       mpich:
         autoload: direct
       openmpi:
         autoload: direct
+      perl:
+        template: modules/perl-modulefile.lua
       projections:
         all: "{name}/{version}"
         hdf5: "{name}/{version}-{target.name}"
@@ -41,6 +47,8 @@ modules:
         openmpi: "{name}/{version}-{target.name}"
         parallel-netcdf: "{name}/{version}-{target.name}"
         parallelio: "{name}/{version}-{target.name}"
+      r:
+        template: modules/r-modulefile.lua
       ucx:
         environment:
           "set:":

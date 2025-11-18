@@ -5,15 +5,6 @@ spack:
       granularity: generic
       host_compatible: true
     unify: false
-  modules:
-    default:
-      lmod:
-        matlab:
-          template: modules/matlab-modulefile.lua
-        perl:
-          template: modules/perl-modulefile.lua
-        r:
-          template: modules/r-modulefile.lua
   packages:
     all:
       require:
