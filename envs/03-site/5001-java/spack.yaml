@@ -10,7 +10,6 @@ spack:
       require:
         - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
-    - openjdk
     - openjdk@17
     - openjdk@11
     - openjdk@1.8
