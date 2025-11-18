@@ -15,6 +15,10 @@ if [ ! -f "$COMMON_SH" ] && [ -n "${SPACK_ROOT}" ] && [ -d "${SPACK_ROOT}/dist/b
   COMMON_SH="${SPACK_ROOT}/dist/bin/hooks/amplitude/common.sh"
 fi
 
+if [ "$CI" == 1 ]; then
+  exit 0
+fi
+
 if [ ! -f "$ENV_SH" ] || [ ! -r "$ENV_SH" ] || [ ! -f "$COMMON_SH" ] || [ ! -r "$COMMON_SH" ]; then
   exit 0
 fi
