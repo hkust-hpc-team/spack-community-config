@@ -16,6 +16,7 @@ spack:
     - expat
     - gdb
     - gperf
+    - neovim
     - parallel
     - screen
     - tcsh
