@@ -27,7 +27,7 @@ config:
     v: view
     vars: info --no-dependencies --no-versions
     vers: versions
-  build_jobs: 256
+  build_jobs: 32
   build_stage:
     - $tempdir/spack-stage/build
   connect_timeout: 30
