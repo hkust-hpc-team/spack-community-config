@@ -16,13 +16,19 @@ if [ "$USER" == "root" ]; then
   exit 1
 fi
 
-declare python3_cmd="$(which $(ls /usr/bin/python3.1[0123]))"
+declare python3_cmd=""
+for py_ver in 3.13 3.12 3.11 3.10; do
+  python3_cmd="$(command -v python${py_ver} || true)"
+  if [ -n "$python3_cmd" ]; then
+    break
+  fi
+done
 if [ -z "$python3_cmd" ]; then
   echo "W: Python >=3.10,<=3.13 not found"
   echo "W: Trying python 3.9 (experimental)"
-  python3_cmd="$(which $(ls /usr/bin/python3.9))"
+  python3_cmd="$(command -v python3.9 || true)"
 fi
-declare git_cmd="$(which git)"
+declare git_cmd="$(command -v git || true)"
 declare ls_cmd="ls -l --color=always"
 declare ln_cmd="ln -sfn"
 declare cp_cmd="cp"
@@ -47,7 +53,7 @@ if [ -z "$git_cmd" ]; then
   exit 1
 fi
 if [ "$ENABLE_DEVELOPMENT" == "1" ]; then
-  declare pdm_cmd="$(which pdm)"
+  declare pdm_cmd="$(command -v pdm || true)"
   if [ -z "$pdm_cmd" ]; then
     echo "E: Development dependency PDM not found"
     exit 1
