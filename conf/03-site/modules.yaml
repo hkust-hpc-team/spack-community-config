@@ -26,7 +26,10 @@ modules:
         autoload: direct
         environment:
           "set:":
+            FI_PROVIDER: "verbs"
             I_MPI_FABRICS: "shm:ofi"
+            I_MPI_PMI: "pmi"
+            I_MPI_PMI_LIBRARY: /usr/lib64/libpmi.so
       libfabric:
         autoload: direct
       matlab:
