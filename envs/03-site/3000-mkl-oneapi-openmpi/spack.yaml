@@ -18,8 +18,8 @@ spack:
               - "%oneapi@2024.2.1"
               - "%oneapi@2023.2.4"
     - mpis:
-        - ^openmpi@5
-        - ^openmpi@4
+        - ^openmpi@5%oneapi
+        - ^openmpi@4%oneapi
   packages:
     all:
       require:
