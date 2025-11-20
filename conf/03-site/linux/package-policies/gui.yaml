@@ -40,8 +40,13 @@ packages:
     require:
       - +cups
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+  harfbuzz:
+    require:
+      - +graphite2
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
   icu4c:
     require:
+      - "@76.1"
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   libxcb:
     require:
