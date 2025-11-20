@@ -13,10 +13,14 @@ packages:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   elfutils:
     require:
+      - +debuginfod
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   gdbm:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+  glib:
+    require:
+      - default_library=shared,static
   gmp:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
@@ -27,6 +31,9 @@ packages:
       - +zstd
       - +brotli
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+  gobject-introspection:
+    require:
+      - default_library=shared,static
   googletest:
     require:
       - +absl
@@ -38,8 +45,12 @@ packages:
   libedit:
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+  libelf:
+    require:
+      - "target=x86_64_v4 %gcc@11.5.0.spack"
   libffi:
     require:
+      - "@3.4.6"
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   libidn2:
     require:
