@@ -1,0 +1,31 @@
+spack:
+  concretizer:
+    targets:
+      granularity: microarchitectures
+      host_compatible: false
+    unify: false
+  definitions:
+    - goals:
+        - "fftw@3+mpi"
+    - ccs:
+        - matrix:
+            - - "target=zen4"
+            - - "%aocc@5.0.0"
+    - mpis:
+        - ^openmpi@5
+        - ^openmpi@4
+  packages:
+    all:
+      require:
+        - one_of:
+            - "target=zen4 %aocc@:"
+            - "target=x86_64_v4 %gcc@11.5.0.spack"
+    gcc-runtime:
+      require:
+        - "target=x86_64_v4 %gcc@11.5.0.spack"
+  specs:
+    - matrix:
+        - - $goals
+        - - $ccs
+        - - $mpis
+  view: false
