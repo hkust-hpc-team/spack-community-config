@@ -3,7 +3,7 @@ packages:
     prefer:
       - ~amd
       - +envmods
-      - ~nvidia
+      - +nvidia
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
   intel-oneapi-compilers-classic:

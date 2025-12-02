@@ -19,7 +19,6 @@ packages:
       - "%gcc@11.5.0.spack"
     require:
       - +atomics
-      - ~cuda
       - ~internal-hwloc
       - ~internal-libevent
       - ~internal-pmix
@@ -34,12 +33,21 @@ packages:
       - +wrapper-rpath
       - spec: +legacylaunchers
         when: "@:4 schedulers=slurm"
+      - one_of:
+          - "target=zen4 %aocc@:"
+          - "target=x86_64_v4 %nvhpc@:"
+          - "target=x86_64_v4 %oneapi@:"
+      - spec: ~cuda
+        when: "%aocc@:"
+      - spec: +cuda
+        when: "%nvhpc@:"
+      - spec: ~cuda
+        when: "%oneapi@:"
   ucx:
     conflict:
-      - "%gcc@11.5.0.spack"
+      - "%nvhpc"
     require:
       - +cma
-      - ~cuda
       - +dc
       - +dm
       - ~gdrcopy
@@ -61,3 +69,13 @@ packages:
       - libs=shared,static
       - opt=3
       - simd=auto
+      - one_of:
+          - "target=zen4 %aocc@:"
+          - "target=x86_64_v4 %oneapi@:"
+          - "target=x86_64_v4 %gcc@11.5.0.spack"
+      - spec: ~cuda
+        when: "%aocc@:"
+      - spec: +cuda
+        when: "%gcc@11.5.0.spack"
+      - spec: ~cuda
+        when: "%oneapi@:"
