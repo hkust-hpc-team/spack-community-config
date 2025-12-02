@@ -124,7 +124,7 @@ function _spack_variant_init() {
     echo
   ) >&2
 
-  if [ $_spack_no_confirm -eq 1 ]; then
+  if [ "$_spack_no_confirm" -eq 1 ]; then
     echo "==> Activating spack instance [$_spack_variant] with no confirm" >&2
   else
     read -p "==> Activate spack instance [$_spack_variant]? [y/N] " -r _spack_confirm
@@ -162,10 +162,10 @@ _spack_variant_init
 _spack_variant_init_ret=$?
 unset -f _spack_variant_init
 unset _spack_no_confirm _spack_disable_local_config _spack_system_config_path _spack_user_config_path _spack_user_cache_path _spack_variant _spack_root
-if [ $_spack_variant_init_ret -eq 0 ]; then
+if [ "$_spack_variant_init_ret" -eq 0 ]; then
   unset _spack_variant_init_ret
   echo "==> Setting up spack [$SPACK_VARIANT] environment" >&2
-  export MODULEPATH="$(echo $MODULEPATH | tr ':' '\n' | grep -v 'spack' | tr '\n' ':')"
+  export MODULEPATH="$(echo "$MODULEPATH" | tr ':' '\n' | grep -v 'spack' | tr '\n' ':')"
   module use $SPACK_ROOT/dist/lmod/linux-*/Core || true
   _pre_activate_hook="$SPACK_ROOT/dist/bin/hooks/pre-activate.sh"
   if [ ! -f "$_pre_activate_hook" ]; then
