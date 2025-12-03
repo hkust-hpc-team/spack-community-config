@@ -13,8 +13,9 @@ compiler-find-mpi.build: $(SPACK_MPI_COMPILER_TARGETS)
 
 compiler-find-all.build: $(SPACK_COMPILER_TARGETS)
 	spack compiler find \
-		$(SPACK_COMPILER_PREFIX)/{aocc,gcc,intel-oneapi-compilers-classic,llvm}-[0-9]* \
-		$(SPACK_COMPILER_PREFIX)/intel-oneapi-compilers-2*/compiler/2*/{,linux}
+		$(SPACK_COMPILER_PREFIX)/{aocc,gcc,intel-oneapi-compilers-classic}-[0-9]* \
+		$(SPACK_COMPILER_PREFIX)/intel-oneapi-compilers-2*/compiler/2*/{,linux} \
+		$(SPACK_COMPILER_PREFIX)/nvhpc-2*/Linux_x86_64/2*.*/compilers
 	$(MAKE) clean
 	touch $@
 
