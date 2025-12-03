@@ -25,3 +25,6 @@ compiler-find-os:
 		$(SPACK_ROOT)/opt/spack/linux-*-x86_64_v4/gcc-*.os/gcc-11.5.0-*
 	sed 's|gcc@=11.5.0|gcc@=11.5.0.spack|g' -i $(SPACK_ROOT)/etc/spack/linux/compilers.yaml
 	$(MAKE) clean
+
+PHONY_TARGETS := $(PHONY_TARGETS) compiler-find-os
+FILE_TARGETS := $(FILE_TARGETS) compiler-find-mpi.build compiler-find-all.build
