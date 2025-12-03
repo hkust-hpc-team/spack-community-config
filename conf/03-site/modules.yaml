@@ -6,8 +6,8 @@ modules:
     lmod:
       all:
         autoload: run
-      anaconda:
-        template: modules/anaconda-modulefile.lua
+      anaconda3:
+        template: modules/anaconda3-modulefile.lua
       aocc:
         autoload: direct
       core_compilers:
