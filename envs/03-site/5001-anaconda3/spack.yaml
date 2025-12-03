@@ -6,18 +6,16 @@ spack:
       host_compatible: true
     unify: false
   definitions:
-    - python_specs:
+    - conda_specs:
         - matrix:
-            - - python
-            - - "@3.13"
-              - "@3.12"
-              - "@3.11"
-              - "@3.10"
-              - "@3.9"
+            - - anaconda3
+            - - "@2025.06-1"
+              - "@2024.10-1"
+              - "@2023.09-0"
   packages:
     all:
       require:
         - "target=x86_64_v4 %gcc@11.5.0.spack"
   specs:
-    - $python_specs
+    - $conda_specs
   view: false
