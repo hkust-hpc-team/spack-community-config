@@ -14,6 +14,7 @@ spack:
     - dos2unix
     - emacs +json
     - expat
+    - expect
     - gdb
     - gperf
     - neovim
