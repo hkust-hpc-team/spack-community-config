@@ -1,0 +1,7 @@
+packages:
+  libxc:
+    prefer:
+      - ~cuda
+    require:
+      - +kxc
+      - +lxc
