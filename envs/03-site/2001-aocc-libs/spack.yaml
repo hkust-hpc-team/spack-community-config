@@ -20,6 +20,7 @@ spack:
           - fftw~mpi
           - glib
           - gsl
+          - libxc
         - - "target=zen4"
         - - "%aocc@5.0.0"
   view: false
