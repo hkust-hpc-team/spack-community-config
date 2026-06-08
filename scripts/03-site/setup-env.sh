@@ -35,7 +35,7 @@ fi
 declare _spack_disable_local_config="${SPACK_DISABLE_LOCAL_CONFIG:-0}"
 
 # Settings
-declare _spack_correspondent="kftse   (kftse@ust.hk)"
+declare _spack_correspondent="HPC Support (hpc4support@ust.hk)"
 declare _spack_root="$(realpath $(dirname $(realpath $_spack_script_path))/../../..)"
 declare _spack_variant="$(cat $_spack_root/.spack-config.variant.log)"
 
