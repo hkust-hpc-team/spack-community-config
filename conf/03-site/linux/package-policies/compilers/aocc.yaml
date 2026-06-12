@@ -4,3 +4,21 @@ packages:
       - +license-agreed
     require:
       - "target=x86_64_v4 %gcc@11.5.0.spack"
+    buildable: false
+    externals:
+      - spec: aocc@5.0.0
+        prefix: /dev/shm/.spack-test-kiu/opt/spack/linux-rocky9-x86_64_v4/gcc-11.5.0.spack/aocc-5.0.0-bcw5biu2gmkjpduiihe5vvjf74fvmmil
+        extra_attributes:
+          environment:
+            prepend_path:
+              LIBRARY_PATH: /dev/shm/.spack-test-kiu/opt/spack/linux-rocky9-x86_64_v4/gcc-11.4.1.os/gcc-11.5.0-osvvfdv4yevcqsitdlqp6arlxlnyecsl/lib64
+          extra_rpaths:
+            - /dev/shm/.spack-test-kiu/opt/spack/linux-rocky9-x86_64_v4/gcc-11.4.1.os/gcc-11.5.0-osvvfdv4yevcqsitdlqp6arlxlnyecsl/lib64
+      - spec: aocc@4.2.0
+        prefix: /dev/shm/.spack-test-kiu/opt/spack/linux-rocky9-x86_64_v4/gcc-11.5.0.spack/aocc-4.2.0-lhjvw3vfpdxqbgfgdcvpcdffxkji4ifv
+        extra_attributes:
+          environment:
+            prepend_path:
+              LIBRARY_PATH: /dev/shm/.spack-test-kiu/opt/spack/linux-rocky9-x86_64_v4/gcc-11.4.1.os/gcc-11.5.0-osvvfdv4yevcqsitdlqp6arlxlnyecsl/lib64
+          extra_rpaths:
+            - /dev/shm/.spack-test-kiu/opt/spack/linux-rocky9-x86_64_v4/gcc-11.4.1.os/gcc-11.5.0-osvvfdv4yevcqsitdlqp6arlxlnyecsl/lib64

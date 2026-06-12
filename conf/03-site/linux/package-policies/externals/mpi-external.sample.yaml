@@ -2,7 +2,7 @@ packages:
   knem:
     buildable: false
     externals:
-      - prefix: /opt/knem-1.1.4.90mlnx3
+      - prefix: /opt/knem-1.1.4.90mlnx4
         spec: knem@1.1.4
   munge:
     buildable: false
@@ -14,17 +14,17 @@ packages:
     externals:
       - prefix: /opt/mvapich/plus/4.0/.ucx/mpirun/gcc13.2.0/
         spec: mvapich-plus@4 ~cuda ~rocm netmod=ucx process_managers=slurm
-  pmix:
-    externals:
-      - prefix: /usr
-        spec: pmix@3.2.3 +munge
-    prefer:
-      - "@5"
-    require:
-      - +munge
-      - spec: +pmi_backwards_compatibility
-        when: "@:3"
-      - "target=x86_64_v4 %gcc@11.5.0.spack"
+#  pmix:
+#    externals:
+#      - prefix: /usr
+#        spec: pmix@3.2.3 +munge
+#    prefer:
+#      - "@5"
+#    require:
+#      - +munge
+#      - spec: +pmi_backwards_compatibility
+#        when: "@:3"
+#      - "target=x86_64_v4 %gcc@11.5.0.spack"
   rdma-core:
     buildable: false
     externals:
