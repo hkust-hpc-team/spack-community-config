@@ -40,6 +40,12 @@ modules:
         autoload: direct
       openmpi:
         autoload: direct
+      # Only builds using system PMIx 3 need this precedence. Both Open MPI
+      # 4 and 5 can use Spack PMIx 5, which must not load system PMIx 3.
+      'openmpi ^pmix@3':
+        environment:
+          prepend_path:
+            LD_LIBRARY_PATH: /usr/lib64
       perl:
         template: modules/perl-modulefile.lua
       projections:

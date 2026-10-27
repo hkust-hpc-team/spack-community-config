@@ -1,4 +1,4 @@
 [submodule "repos/meta-pkgs"]
 	path = repos/meta-pkgs
 	url = https://github.com/hkust-hpc-team/spack-meta-pkgs.git
-	branch = release/2026.1
+	branch = release/2026.2
